@@ -84,8 +84,10 @@ p{margin:0}
 }
 figure{margin:0}
 /* margen de seguridad: las imágenes fuera del hero no llenan todo el ancho */
-:root{--img-max:1180px}
-.gal,.shots{max-width:var(--img-max);margin-inline:auto;width:100%}
+:root{--img-max:1040px}
+.shots{max-width:var(--img-max);margin-inline:auto;width:100%}
+/* la galería entra entera en pantalla: imagen grande + miniaturas, sin hacer scroll */
+.gal{max-width:min(var(--img-max),calc((100svh - 150px) * 1.38));margin-inline:auto;width:100%}
 .a-cover{max-width:var(--img-max);width:calc(100% - 2*var(--m));margin-inline:auto}
 
 section{padding-block:clamp(56px,8vw,112px)}
