@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Francisco Recaite</title>
+<meta name="description" content="Francisco Recaite. Diseño arquitectónico, desarrollo inmobiliario e inteligencia artificial aplicada desde Málaga, Andalucía.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: 12 columnas, margen 60, índice editorial con reglas finas y un solo acento naranja. Artículos en columna de lectura con índice lateral fijo. Tema único (claro), del design system de Figma. */
+:root{
+  color-scheme:light;
+  --bg:#F2F1ED; --surface:#E8E7E2; --fg:#111111; --muted:#686864; --border:#D2D1CC; --accent:#FF4D00;
+  --display:"Manrope",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --m:clamp(20px,4.2vw,60px); --g:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.03em}
+p{margin:0}
+[hidden]{display:none!important}
+.wrap{padding-inline:var(--m);max-width:1560px;margin-inline:auto}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.n{font-family:var(--mono);font-size:14px;color:var(--accent)}
+
+.nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.nav .wrap{display:flex;align-items:center;gap:24px;height:64px}
+.logo{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.04em}
+.logo i{font-style:normal;color:var(--accent)}
+.nav .label{flex:1}
+.nav nav{display:flex;gap:28px;font-size:14px}
+.nav nav a{padding:6px 0;border-bottom:1px solid transparent}
+.nav nav a:hover{border-color:var(--fg)}
+
+.nav.over{background:transparent;backdrop-filter:none;border-color:transparent;color:#fff}
+.nav.over .label{color:rgba(255,255,255,.75)}
+.nav.over nav a:hover{border-color:#fff}
+.hero{position:relative;height:100svh;min-height:600px;margin-top:-65px;color:#fff;overflow:hidden;background:#111}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,10,.5) 0,rgba(10,10,10,0) 22%,rgba(10,10,10,0) 42%,rgba(10,10,10,.82) 100%)}
+.axes{position:absolute;inset:0;z-index:1;pointer-events:none}
+.axes span{position:absolute;top:92px;bottom:0;width:1px;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.42) 0 22px,transparent 22px 28px,rgba(255,255,255,.42) 28px 31px,transparent 31px 37px)}
+.axes b{position:absolute;top:-6px;left:50%;transform:translate(-50%,-100%);width:26px;height:26px;border:1px solid rgba(255,255,255,.7);border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:400}
+.axes span:nth-child(1){left:var(--m)}.axes span:nth-child(2){left:36%}.axes span:nth-child(3){left:64%}.axes span:nth-child(4){right:var(--m)}
+.hero-in{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);align-items:end;padding-bottom:clamp(24px,4vw,56px)}
+.hero-main{grid-column:1/9;display:grid;gap:clamp(14px,2vw,24px)}
+.hero .label{color:rgba(255,255,255,.78)}
+.hero h1{font-weight:800;font-size:clamp(44px,6.6vw,108px);line-height:.88;letter-spacing:-.055em;text-transform:uppercase}
+.hero h1 span{display:block}
+.hero-side{grid-column:9/13;display:grid;gap:clamp(12px,1.4vw,22px);justify-items:start;padding-bottom:.6vw}
+.hero-side p{font-size:clamp(16px,1.35vw,20px);line-height:1.45;color:rgba(255,255,255,.9);max-width:34ch}
+.hero-side a{display:inline-flex;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--accent)}
+.hero-side a:hover{color:var(--accent)}
+@media (max-width:900px){
+  .hero-main,.hero-side{grid-column:1/13}
+  .axes span:nth-child(2),.axes span:nth-child(3){display:none}
+}
+.hero{container-type:inline-size}
+@media (max-aspect-ratio:5/4){
+  .hero{height:auto;min-height:0;aspect-ratio:16/9}
+  .hero-in{gap:2cqw;padding-bottom:3cqw}
+  .hero-main{grid-column:1/9;gap:1.4cqw}
+  .hero h1{font-size:7.2cqw}
+  .hero-side{grid-column:9/13;gap:1.4cqw}
+  .hero-side p{font-size:max(10px,1.55cqw)}
+  .hero-side a{font-size:max(8px,1cqw)}
+  .hero .hero-main .label{font-size:max(8px,1cqw)}
+  .axes span{top:max(70px,8cqw);display:block!important}
+  .axes b{width:max(16px,2.2cqw);height:max(16px,2.2cqw);font-size:max(8px,1cqw)}
+}
+@media (max-aspect-ratio:5/4) and (max-width:640px){
+  .hero-main{grid-column:1/8}
+  .hero-side p,.hero .hero-main .label,.axes b{display:none!important}
+  .hero-side{grid-column:8/13;justify-items:end}
+  .hero-side a{font-size:9px;gap:6px;padding-bottom:3px}
+  .axes span{top:65px}
+}
+figure{margin:0}
+
+section{padding-block:clamp(56px,8vw,112px)}
+.sec-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:clamp(32px,5vw,64px)}
+.intro{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);margin-bottom:clamp(40px,6vw,72px)}
+.intro h2{grid-column:1/8;font-size:clamp(36px,5.6vw,72px);font-weight:700;line-height:1}
+.intro p{grid-column:8/13;color:var(--muted);align-self:end;max-width:46ch}
+
+.proj{padding-block:clamp(32px,4vw,56px);border-top:1px solid var(--border)}
+.proj:first-of-type{border-top:0;padding-top:0}
+.proj-meta{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);align-items:baseline;margin-bottom:28px}
+.proj-meta .n{grid-column:1/2}
+.proj-meta h3{grid-column:2/7;font-size:clamp(28px,3.4vw,48px);font-weight:700;line-height:1.05}
+.proj-meta .d{grid-column:7/12;color:var(--muted);font-size:16px;max-width:52ch}
+.proj-meta .y{grid-column:12/13;justify-self:end;white-space:nowrap}
+.proj-meta.wide h3{grid-column:2/12}
+.proj-meta.wide .y{grid-row:1}
+.proj-meta.wide .d{grid-column:2/12;max-width:none;margin-top:clamp(8px,1.4vw,18px)}
+.proj-meta.wide .d p{columns:2;column-gap:calc(var(--g)*2);line-height:1.6}
+@media (max-width:900px){.proj-meta.wide h3{grid-column:auto}.proj-meta.wide .d{grid-column:1/4}.proj-meta.wide .d p{columns:1}}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);padding:7px 12px;color:var(--muted)}
+.shots{display:grid;gap:var(--g);grid-template-columns:repeat(12,1fr)}
+.shot{position:relative;overflow:hidden;background:var(--surface);cursor:zoom-in;display:block;width:100%}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.shot:hover img{transform:scale(1.03)}
+.shot.full{grid-column:1/13;aspect-ratio:1320/680}
+#caseTop .shot.full{aspect-ratio:1600/953}
+.shot.w8{grid-column:span 8;aspect-ratio:16/9.6}
+.shot.w6{grid-column:span 6;aspect-ratio:16/10}
+.shot.w4{grid-column:span 4;aspect-ratio:4/3.4}
+.shot.w3{grid-column:span 3;aspect-ratio:1239/1113}
+
+.case{padding-bottom:clamp(40px,6vw,88px);border-bottom:1px solid var(--fg);margin-bottom:clamp(40px,6vw,72px)}
+.case-head{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);align-items:end;margin-bottom:clamp(28px,4vw,48px)}
+.case-title{grid-column:1/8;display:grid;gap:14px}
+.case-title .n{display:block}
+.case-title h2{font-size:clamp(40px,6.4vw,96px);font-weight:800;line-height:.94;letter-spacing:-.045em}
+.case-claim{grid-column:8/13;font-family:var(--display);font-weight:600;font-size:clamp(20px,2vw,28px);line-height:1.2;letter-spacing:-.02em}
+.case-intro{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);padding-block:clamp(36px,5vw,72px)}
+.case-intro .big{grid-column:1/8;font-family:var(--display);font-weight:600;font-size:clamp(24px,2.8vw,40px);line-height:1.15;letter-spacing:-.025em}
+.case-more-btn{grid-column:9/13;align-self:end;justify-self:end}
+@media (max-width:900px){.case-more-btn{justify-self:start}}
+.case-intro{padding-bottom:0}
+#caseMore{padding-top:clamp(40px,6vw,80px)}
+.btn{display:inline-flex;align-items:center;gap:14px;min-height:50px;padding:0 24px;background:var(--fg);color:var(--bg);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:background .2s;border:0;cursor:pointer}
+.btn:hover{background:var(--accent)}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--g)}
+.solves{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);margin-top:clamp(48px,6vw,88px);background:var(--fg);color:var(--bg);padding:clamp(24px,4vw,56px)}
+.solves-h{grid-column:1/5;display:grid;gap:16px;align-content:start}
+.solves .label{color:#9c9b96}
+.solves h3{font-size:clamp(24px,2.4vw,34px);font-weight:700;line-height:1.1}
+.solves ul{grid-column:5/13;list-style:none;margin:0;padding:0}
+.solves li{display:grid;grid-template-columns:1fr 1.4fr;gap:var(--g);padding:16px 0;border-top:1px solid #3a3a3a;font-size:16px;line-height:1.4}
+.solves .pb{color:#b9b8b3;text-decoration:line-through;text-decoration-color:var(--accent)}
+.case-sub{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);padding-block:clamp(40px,5vw,72px) 28px}
+.case-sub .label{grid-column:1/5}
+.case-sub p{grid-column:5/11;color:var(--muted)}
+@media (max-width:900px){
+  .case-title,.case-claim,.case-intro .big,.case-more-btn,.solves-h,.solves ul,.case-sub .label,.case-sub p{grid-column:1/13}
+  .pillars{grid-template-columns:1fr 1fr;gap:28px var(--g)}
+  .solves li{grid-template-columns:1fr;gap:4px}
+}
+@media (max-width:520px){.pillars{grid-template-columns:1fr}}
+.stack{grid-column:5/11;display:grid;gap:1em}
+.case-sub .stack p{grid-column:auto}
+.case-sub .stack p:first-child{font-family:var(--display);font-weight:600;font-size:clamp(20px,2vw,28px);line-height:1.2;letter-spacing:-.02em;color:var(--fg)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g);border-block:1px solid var(--fg);padding-block:clamp(24px,3vw,40px);margin-top:clamp(12px,2vw,24px)}
+.stats div{display:grid;gap:10px;align-content:start}
+.stats b{font-family:var(--display);font-weight:800;font-size:clamp(52px,7vw,104px);line-height:.9;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.stats span:not(.label){font-size:16px;line-height:1.4;max-width:30ch}
+.stats-note{font-size:13px;color:var(--muted);margin:14px 0 clamp(40px,5vw,72px);max-width:90ch}
+.stats-note a{text-decoration:underline;text-underline-offset:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--g);margin-top:clamp(40px,5vw,72px)}
+.two div{border-top:1px solid var(--fg);padding-top:18px;display:grid;gap:14px;align-content:start}
+.two p{color:var(--muted);max-width:52ch}
+@media (max-width:900px){.stack{grid-column:1/13}.stats,.two{grid-template-columns:1fr;gap:28px}}
+/* galería de modelos: imagen grande que cambia sola + miniaturas */
+.gal{display:grid;gap:12px;--dur:5s}
+.gal-main{position:relative;display:block;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--surface);cursor:zoom-in}
+.gal-slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}
+.gal-slide.on{opacity:1}
+.gal-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gal.fit .gal-main{aspect-ratio:16/10}
+.gal.fit .gal-slide img:not(.gal-bg){object-fit:contain}
+.gal-bg{filter:blur(28px) saturate(.9) brightness(.92);transform:scale(1.15)}
+.gal-stage{position:relative}
+.gal.has-note .gal-main::after{height:55%;background:linear-gradient(to top,rgba(10,10,10,.78),rgba(10,10,10,.35) 45%,transparent)}
+.gal.has-note .gal-cap{right:auto;max-width:40%}
+.gal-note{position:absolute;right:clamp(16px,2.4vw,32px);bottom:clamp(14px,2vw,26px);max-width:min(46ch,52%);color:#fff;font-size:clamp(13px,1.05vw,16px);line-height:1.5;text-align:right;text-shadow:0 1px 14px rgba(0,0,0,.5);pointer-events:none}
+.gal-note.in{animation:noteIn .8s ease}
+@keyframes noteIn{from{opacity:0;transform:translateY(8px)}}
+@media (max-width:700px){
+  .gal-note{position:static;max-width:none;color:var(--muted);text-align:left;text-shadow:none;margin-top:12px;font-size:15px;pointer-events:auto}
+  .gal.has-note .gal-cap{max-width:none;right:16px}
+  .gal.has-note .gal-main::after{height:30%}
+}
+.gal.fit .gal-thumbs{display:flex;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
+.gal.fit .gal-thumbs button{flex:0 0 clamp(96px,11vw,150px)}
+.gal-main::after{content:"";position:absolute;inset:auto 0 0 0;height:30%;background:linear-gradient(to top,rgba(10,10,10,.55),transparent);pointer-events:none}
+.gal-cap{position:absolute;left:clamp(14px,2vw,24px);right:clamp(14px,2vw,24px);bottom:clamp(12px,1.8vw,22px);z-index:1;color:#fff!important}
+@media (max-width:520px){.gal-cap{font-size:9px}}
+.gal-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gal-thumbs button{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--surface);opacity:.5;transition:opacity .3s}
+.gal-thumbs button:hover,.gal-thumbs button.on{opacity:1}
+.gal-thumbs img{width:100%;height:100%;object-fit:cover}
+.gal-thumbs button::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--accent)}
+.gal-thumbs button.on::after{animation:galbar var(--dur) linear forwards}
+.gal:hover .gal-thumbs button.on::after{animation-play-state:paused}
+@keyframes galbar{to{width:100%}}
+@media (max-width:900px){.gal{gap:8px}.gal-thumbs{gap:8px}}
+@media (prefers-reduced-motion:reduce){.gal-thumbs button.on::after{animation:none;width:100%}.gal-note.in{animation:none}}
+/* proyectos con "leer más" y planta conmutable */
+.proj .case-intro{padding-block:clamp(28px,4vw,56px) 0}
+.solves .k{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--bg);padding-top:2px}
+.more .pillars{margin-top:8px}
+.more .case-sub>p{grid-column:5/11;color:var(--muted)}
+.vs-wrap{overflow-x:auto}
+.vs{width:100%;border-collapse:collapse;font-size:16px;line-height:1.4;min-width:560px}
+.vs th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 16px 12px 0;border-bottom:1px solid var(--fg)}
+.vs th:last-child{color:var(--accent)}
+.vs td{padding:16px 16px 16px 0;border-bottom:1px solid var(--border);vertical-align:top;width:37%}
+.vs td:first-child{width:26%;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding-top:19px}
+.vs td:nth-child(2){color:var(--muted)}
+.vs td:last-child{font-weight:500}
+.vs tr.give td:last-child{font-weight:400;color:var(--muted)}
+.vs tr.give td:first-child::after{content:" · a tener en cuenta";color:var(--accent);text-transform:none;letter-spacing:0}
+@media (max-width:900px){.more .case-sub>p{grid-column:1/13}}
+.plan{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);margin-top:4px}
+.plan-view{grid-column:1/9;display:grid;gap:14px}
+.plan-tabs{display:flex;border:1px solid var(--fg);width:max-content}
+.plan-tabs button{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:11px 18px;transition:background .2s,color .2s}
+.plan-tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+.plan-tabs button:not([aria-selected="true"]):hover{color:var(--accent)}
+.plan-stage{position:relative;display:block;width:100%;aspect-ratio:1/1;background:#fff;overflow:hidden;cursor:zoom-in}
+.plan-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:clamp(8px,2vw,28px);opacity:0;transition:opacity .5s ease}
+.plan-stage img.on{opacity:1}
+.plan-data{grid-column:9/13;align-self:end;display:grid;gap:14px}
+.plan-data table{width:100%;border-collapse:collapse;font-size:15px}
+.plan-data td{padding:9px 0;border-top:1px solid var(--border)}
+.plan-data td:last-child{text-align:right;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.plan-data tr.tot td{border-top:1px solid var(--fg);font-weight:600}
+.plan-foot{font-size:14px;color:var(--muted)}
+@media (max-width:900px){.plan-view,.plan-data{grid-column:1/13}.plan-data{align-self:start}}
+/* encuesta */
+.poll{border:1px solid var(--fg);padding:clamp(22px,3vw,36px)!important;margin-bottom:clamp(36px,4vw,56px);display:grid;gap:14px}
+.poll h2{margin:0!important}
+.poll .hint{font-size:15px;color:var(--muted);margin:0}
+.poll form{display:grid;gap:22px;margin-top:6px}
+.poll fieldset{border:0;margin:0;padding:0;display:grid;gap:10px}
+.poll legend{font-weight:600;font-size:17px;line-height:1.35;display:flex;gap:12px;padding:0;margin-bottom:10px}
+.poll .opts{display:flex;flex-wrap:wrap;gap:8px}
+.poll .opts label{cursor:pointer}
+.poll .opts input{position:absolute;opacity:0;pointer-events:none}
+.poll .opts span{display:inline-block;border:1px solid var(--border);padding:9px 14px;font-size:15px;line-height:1.3;transition:border-color .15s,background .15s}
+.poll .opts label:hover span{border-color:var(--fg)}
+.poll .opts input:checked+span{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.poll .opts input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.ptxt{display:grid;gap:8px;font-size:15px}
+.ptxt i{font-style:normal;color:var(--muted);font-size:13px;margin-left:6px}
+.ptxt textarea{font:inherit;font-size:16px;border:1px solid var(--border);background:transparent;padding:12px;resize:vertical;color:var(--fg)}
+.ptxt textarea:focus{outline:none;border-color:var(--fg)}
+.pact{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.pact .btn[disabled]{opacity:.4;cursor:not-allowed;background:var(--fg)}
+.pmsg{font-size:14px;color:var(--muted)}
+.pres{display:grid;gap:22px}
+.pres:empty{display:none}
+.pres-h{display:flex;justify-content:space-between;border-top:1px solid var(--fg);padding-top:16px;margin-top:6px}
+.pres-q{display:grid;gap:8px}
+.pres-q>p{font-size:15px!important;font-weight:600;color:var(--fg)!important;line-height:1.35!important}
+.pres-o{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 48px;gap:12px;align-items:center;font-size:14px;color:var(--muted)}
+.pres-o.me{color:var(--fg)}
+.pres-b{height:8px;background:var(--surface)}
+.pres-b i{display:block;height:100%;background:#9c9b96}
+.pres-o.me .pres-b i{background:var(--accent)}
+.pres-p{font-family:var(--mono);font-size:12px;text-align:right}
+@media (max-width:640px){.pres-o{grid-template-columns:1fr 44px}.pres-b{grid-column:1/3;order:3}}
+.band{background:var(--surface)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g)}
+.col{border-top:1px solid var(--fg);padding-top:20px;display:grid;gap:14px;align-content:start}
+.col h3{font-size:14px;font-family:var(--mono);font-weight:500;letter-spacing:.12em;text-transform:uppercase}
+.col p{color:var(--muted);font-size:16px;max-width:40ch}
+
+/* ideas en portada */
+.feat{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);align-items:end;padding:clamp(28px,4vw,48px) 0;border-block:1px solid var(--fg);margin-bottom:clamp(32px,4vw,56px)}
+.feat .ft{grid-column:1/8;display:grid;gap:clamp(16px,2vw,28px)}
+.feat .ft .meta{justify-content:flex-start;gap:20px;align-items:baseline}
+.feat h3{font-size:clamp(32px,4.4vw,64px);font-weight:800;line-height:1;letter-spacing:-.04em;transition:color .2s}
+.feat .tx{grid-column:9/13;display:flex;flex-direction:column;gap:18px}
+.feat p{color:var(--muted);font-size:17px}
+.feat:hover h3{color:var(--accent)}
+.feat .go,.card .go{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.feat:hover .go,.card:hover .go{color:var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(36px,4vw,56px) var(--g)}
+.card{display:flex;flex-direction:column;gap:14px;width:100%;border-top:1px solid var(--border);padding-top:18px;transition:border-color .2s}
+.card:hover{border-color:var(--fg)}
+.card .meta:first-child{justify-content:flex-start;gap:16px;align-items:baseline}
+.card h3{font-size:clamp(22px,1.9vw,27px);font-weight:700;line-height:1.12;letter-spacing:-.025em}
+.card p{color:var(--muted);font-size:15px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.meta{display:flex;justify-content:space-between;gap:12px}
+@media (max-width:900px){.feat .ft,.feat .tx{grid-column:1/13}}
+
+/* esquemas */
+.fig{margin-top:30px;border-top:1px solid var(--fg);padding-top:18px;display:grid;gap:14px}
+.fig svg{width:100%;height:auto;display:block;overflow:visible}
+.fig figcaption{font-size:14px;line-height:1.5;color:var(--muted)}
+.fig .t{font-family:var(--mono);font-size:12.5px;fill:var(--muted);letter-spacing:.04em}
+.fig .tk{fill:var(--fg)}.fig .ta{fill:var(--accent)}
+.fig .ln{stroke:var(--fg);fill:none;stroke-width:1.2}
+.fig .lm{stroke:var(--muted)}.fig .la{stroke:var(--accent)}
+.fig .dash{stroke-dasharray:5 4}
+.fig .fa{fill:var(--accent);fill-opacity:.14}.fig .fs{fill:var(--surface)}
+.fig .tkf{fill:var(--fg)}.fig .dot{fill:var(--accent)}.fig .dot2{fill:var(--fg)}
+.grad{display:grid;gap:10px}
+.grad-zones,.grad ol{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.grad-zones span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--fg);padding-bottom:6px}
+.grad-zones span+span{color:var(--accent);border-color:var(--accent)}
+.grad-bar{height:14px;background:linear-gradient(90deg,var(--surface),#8d8c87 55%,var(--fg))}
+.grad ol{list-style:none;margin:0;padding:0}
+.grad li{font-size:14px;line-height:1.3}
+.grad-ends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:640px){.grad-zones,.grad-bar{display:none}.grad ol{grid-template-columns:1fr;gap:6px}.grad li{display:flex;align-items:center;gap:12px;font-size:15px}.grad li::before{content:"";width:34px;height:16px;background:var(--c);border:1px solid var(--border);flex:none}}
+.bars{display:grid;gap:18px}
+.bar-row{display:grid;gap:8px}
+.bar{display:flex;height:42px;gap:2px}
+.bar span{display:flex;align-items:center;padding-left:10px;font-family:var(--mono);font-size:12px;white-space:nowrap;overflow:hidden}
+.b1{background:var(--surface);color:var(--fg)}.b2{background:#b9b8b3;color:var(--fg)}.b3{background:var(--accent);color:#fff}
+.bar-k{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.bar-leg{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted)}
+.bar-leg i{display:inline-block;width:12px;height:12px;margin-right:8px;vertical-align:-1px}
+.mx{display:grid;grid-template-columns:auto 1fr 1fr;gap:4px;align-items:stretch}
+.mx-y{grid-column:1/4;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.mx-yl,.mx-xl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;padding-right:12px}
+.mx-xl{justify-content:center;padding:8px 0 0}
+.mx-c{background:var(--surface);padding:clamp(14px,2vw,22px);font-size:15px;line-height:1.35;min-height:92px;display:flex;align-items:flex-end}
+.mx-c.mx-no{background:var(--fg);color:var(--bg)}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;align-items:end;height:240px}
+.steps div{height:var(--h);background:var(--surface);border-top:2px solid var(--fg);padding:10px;display:flex;flex-direction:column;justify-content:space-between}
+.steps div:last-child{background:var(--fg);color:var(--bg);border-color:var(--accent)}
+.steps b{font-weight:500;font-size:13px;line-height:1.25}
+.steps-ax{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:640px){.steps{grid-template-columns:1fr;height:auto}.steps div{height:auto;width:max(var(--h),58%);flex-direction:row;justify-content:flex-start;align-items:center;gap:12px;border-top:0;border-left:2px solid var(--fg);padding:10px 12px}.steps b{font-size:14px}.steps-ax span:first-child{display:none}}
+.refl{border-left:3px solid var(--accent);padding:4px 0 4px clamp(18px,2.4vw,28px)!important;margin-bottom:clamp(36px,4vw,56px);display:grid;gap:14px}
+.prose .refl p{font-family:var(--display);font-weight:600;font-size:clamp(21px,1.9vw,26px);line-height:1.35;letter-spacing:-.015em;color:var(--fg)}
+
+.about{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g)}
+.about h2{grid-column:1/7;font-size:clamp(32px,4.4vw,56px);font-weight:700;line-height:1.04}
+.about .txt{grid-column:7/13;display:grid;gap:20px;max-width:60ch}
+.about .txt p:first-child{font-size:22px;line-height:1.4}
+.about .txt p+p{color:var(--muted)}
+.facts{grid-column:7/13;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g);margin-top:28px}
+.facts div{border-top:1px solid var(--border);padding-top:12px;display:grid;gap:6px;font-size:15px}
+
+footer{background:var(--fg);color:var(--bg);padding-block:clamp(56px,8vw,112px) 32px}
+footer .label{color:#9c9b96}
+footer h2{font-size:clamp(40px,7.4vw,112px);font-weight:800;line-height:.95;letter-spacing:-.045em;margin-block:28px clamp(40px,6vw,80px);max-width:14ch}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g);border-top:1px solid #333;padding-top:24px}
+.contact div{display:grid;gap:8px;font-size:16px}
+.todo{color:var(--accent)}
+.fine{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:64px}
+
+/* artículo */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:20}
+.a-head{padding-block:clamp(32px,5vw,64px) clamp(28px,4vw,48px)}
+.back{display:inline-flex;gap:10px;margin-bottom:clamp(32px,5vw,64px)}
+.back:hover{color:var(--accent)}
+.a-head .meta{justify-content:flex-start;gap:24px;margin-bottom:20px}
+.a-head h1{font-size:clamp(38px,6.2vw,88px);font-weight:800;line-height:.98;letter-spacing:-.045em;max-width:18ch}
+.a-head .lead{font-size:clamp(20px,1.9vw,26px);line-height:1.4;max-width:42ch;margin-top:clamp(24px,3vw,40px);color:#333}
+.a-cover{aspect-ratio:1440/620;overflow:hidden;background:var(--surface)}
+.a-cover img{width:100%;height:100%;object-fit:cover}
+.a-body{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);padding-block:clamp(40px,6vw,88px)}
+.toc{grid-column:1/4;position:sticky;top:96px;align-self:start;display:grid;gap:14px}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--border)}
+.toc button{display:grid;grid-template-columns:28px 1fr;gap:8px;width:100%;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.3;color:var(--muted)}
+.toc button span:first-child{font-family:var(--mono);font-size:11px;padding-top:2px}
+.toc button:hover,.toc button.on{color:var(--fg)}
+.toc button.on span:first-child{color:var(--accent)}
+.prose{grid-column:5/11;max-width:68ch}
+.prose section{padding:0 0 clamp(36px,4vw,56px);scroll-margin-top:96px}
+.prose h2{font-size:clamp(26px,2.6vw,34px);font-weight:700;line-height:1.12;margin-bottom:18px;display:grid;gap:10px}
+.prose p{font-size:19px;line-height:1.68;color:#262626}
+.prose p+p{margin-top:1.05em}
+.box{margin-top:28px;border-left:3px solid var(--accent);background:var(--surface);padding:22px 24px;display:grid;gap:12px}
+.box ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.box li{font-size:16px;line-height:1.45;padding-left:18px;position:relative}
+.box li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;background:var(--fg)}
+.checklist{border:1px solid var(--fg);padding:clamp(24px,3vw,36px);margin-bottom:clamp(36px,4vw,56px)}
+.checklist h2{margin-bottom:6px}
+.checklist .hint{font-size:14px;color:var(--muted);margin-bottom:18px}
+.checklist ul{list-style:none;margin:0;padding:0}
+.checklist label{display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:start;padding:12px 0;border-top:1px solid var(--border);font-size:17px;line-height:1.4;cursor:pointer}
+.checklist input{appearance:none;width:20px;height:20px;border:1.5px solid var(--fg);margin:2px 0 0;cursor:pointer;display:grid;place-items:center}
+.checklist input:checked{background:var(--accent);border-color:var(--accent)}
+.checklist input:checked::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.checklist input:checked+span{color:var(--muted);text-decoration:line-through}
+.close-q{background:var(--fg);color:var(--bg);padding:clamp(24px,3vw,36px);margin-bottom:clamp(36px,4vw,56px)}
+.close-q h2{color:var(--bg);margin-bottom:8px}
+.close-q p{color:#b9b8b3;font-size:17px}
+.srcs{border-top:1px solid var(--border);padding-top:18px;display:grid;gap:10px}
+.srcs a{font-size:15px;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.srcs a:hover{text-decoration-color:var(--accent)}
+.note{font-size:14px;color:var(--muted);margin-top:18px;line-height:1.5}
+.next{border-top:1px solid var(--fg);padding-block:clamp(32px,4vw,56px);display:grid;grid-template-columns:repeat(12,1fr);gap:var(--g);align-items:end;width:100%}
+.next .label{grid-column:1/4}
+.next h3{grid-column:4/11;font-size:clamp(28px,4vw,56px);font-weight:700;line-height:1.02}
+.next .go{grid-column:11/13;justify-self:end;font-family:var(--mono);font-size:14px}
+.next:hover h3,.next:hover .go{color:var(--accent)}
+
+dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none}
+dialog::backdrop{background:rgba(17,17,17,.86)}
+#lb{width:100vw;height:100vh}
+#lb figure{width:100%;height:100%;display:grid;grid-template-rows:1fr auto;gap:12px;padding:24px;place-items:center}
+#lb img{max-width:100%;max-height:calc(100vh - 110px);object-fit:contain}
+#lb figcaption{color:#fff;display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}
+#lb button{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#fff;border:1px solid #555;padding:10px 14px}
+#lb button:hover{border-color:var(--accent);color:var(--accent)}
+
+@media (max-width:900px){
+  body{font-size:17px}
+  .nav .label{display:none}.nav .wrap{justify-content:space-between}.nav nav{gap:14px;font-size:13px}
+  .hero-bottom h2,.hero-bottom div,.intro h2,.intro p,.about h2,.about .txt,.facts{grid-column:1/13}
+  .hero-img{aspect-ratio:4/3}
+  .proj-meta{grid-template-columns:auto 1fr auto;gap:8px 14px}
+  .proj-meta .n,.proj-meta h3,.proj-meta .y{grid-column:auto}
+  .proj-meta .d{grid-column:1/4}
+  .shot.w8,.shot.w6,.shot.w4,.shot.full{grid-column:1/13;aspect-ratio:16/10}
+  .shot.w3{grid-column:span 6}.shots{gap:12px}
+  .cols,.contact,.cards{grid-template-columns:1fr;gap:32px}
+  .feat .pic,.feat .tx{grid-column:1/13}
+  .facts{grid-template-columns:1fr}
+  .toc{display:none}
+  .prose{grid-column:1/13}
+  .prose p{font-size:18px}
+  .a-cover{aspect-ratio:4/3}
+  .next .label,.next h3,.next .go{grid-column:1/13;justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress" hidden></div>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Francisco Recaite, inicio">FR<i>.</i></a>
+    <span class="label">Diseño arquitectónico / Real Estate / IA</span>
+    <nav aria-label="Principal">
+      <a href="#proyectos">Proyectos</a>
+      <a href="#ideas">Ideas</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div id="home">
+<main id="inicio">
+<div class="hero" id="hero">
+  <img class="hero-bg" src="img/hero.jpg" alt="Vivienda modular compacta con envolvente de lamas de madera y marco oscuro">
+  <div class="axes" aria-hidden="true"><span><b>A</b></span><span><b>B</b></span><span><b>C</b></span><span><b>D</b></span></div>
+  <div class="wrap hero-in">
+    <div class="hero-main">
+      <span class="label">Diseño arquitectónico &amp; Real Estate / Andalucía</span>
+      <h1><span>Francisco</span><span>Recaite</span></h1>
+    </div>
+    <div class="hero-side">
+      <p>La vivienda está cambiando. Hoy se piensa con más precisión, se construye en menos tiempo y se diseña de forma más eficiente e inteligente.</p>
+      <a href="#proyectos"><span>Ver proyectos</span><span>↓</span></a>
+    </div>
+  </div>
+</div>
+
+<section id="proyectos" class="wrap">
+  <article class="case">
+    <div class="case-head">
+      <div class="case-title"><span class="n">01</span><span class="label">Proyecto destacado / Vivienda industrializada</span>
+        <h2>Vivienda modular</h2></div>
+      <p class="case-claim">Un método probado para construir mejor en Andalucía, con plazo, precio y calidad definidos de antemano.</p>
+    </div>
+    <div class="shots" id="caseTop"></div>
+    <div class="case-intro">
+      <p class="big">El valor de la vivienda modular está en la certeza. Acorta los plazos, reduce los imprevistos y se construye de forma más eficiente.</p>
+      <div class="case-more-btn"><button type="button" class="btn" id="caseBtn" aria-expanded="false" aria-controls="caseMore"><span>Leer más</span><span aria-hidden="true">↓</span></button></div>
+    </div>
+    <div id="caseMore" hidden>
+      <div class="case-sub" style="padding-top:0"><span class="label">Por qué importa</span><div class="stack"><p>La innovación es lo primero que se ve. El valor llega después, en lo que el método le quita a quien construye: incertidumbre.</p><p>Una obra convencional se decide en parte sobre la marcha, expuesta al clima, a la disponibilidad de oficios y a los imprevistos. Una vivienda modular se resuelve completa en el proyecto, se fabrica con procesos repetibles y llega a la parcela lista para montar. Los distintos modelos de esta línea cambian en tamaño, distribución y fachada, y comparten ese mismo sistema.</p></div></div>
+      <div class="stats">
+        <div><b>30 %</b><span>menos plazo de obra, como máximo, frente a la construcción tradicional</span><span class="label">Clúster de la Edificación</span></div>
+        <div><b>32 %</b><span>menos costes indirectos, como máximo: andamios, grúas y acopios</span><span class="label">Clúster de la Edificación</span></div>
+        <div><b>30 %</b><span>menos huella de carbono y residuos</span><span class="label">CoHispania, informe 2025</span></div>
+      </div>
+      <p class="stats-note">Datos del sector en España sobre construcción industrializada. No son mediciones de un modelo concreto de esta línea. Fuentes: <a href="https://brainsre.news/construccion-industrializada-sector-inmobiliario/" target="_blank" rel="noopener">estudio del Clúster de la Edificación</a> e <a href="https://brainsre.news/?p=288462" target="_blank" rel="noopener">informe sectorial de CoHispania</a>.</p>
+      <div class="pillars">
+        <div class="col"><span class="n">A</span><h3>Plazo cierto</h3><p>La cimentación y la fabricación avanzan a la vez, y el taller no se detiene por lluvia. La fecha de entrega se fija con datos de producción.</p></div>
+        <div class="col"><span class="n">B</span><h3>Coste controlado</h3><p>Todo se mide y se decide en el proyecto. Lo que se fabrica es lo que se presupuestó, con poco margen para partidas imprevistas.</p></div>
+        <div class="col"><span class="n">C</span><h3>Calidad constante</h3><p>Cada módulo pasa por los mismos procesos y controles, bajo techo y con equipos estables. Los defectos se detectan antes de salir de fábrica.</p></div>
+        <div class="col"><span class="n">D</span><h3>Menos impacto</h3><p>Material optimizado, menos residuos y una estancia corta en la parcela. Menos ruido, polvo y camiones para el entorno.</p></div>
+      </div>
+      <div class="solves">
+        <div class="solves-h"><span class="label">Lo que resuelve</span><h3>Cinco problemas habituales de la obra convencional.</h3></div>
+        <ul>
+          <li><span class="pb">Plazos que se alargan</span><span class="rs">Fabricación en serie con calendario definido desde el pedido.</span></li>
+          <li><span class="pb">Sobrecostes durante la obra</span><span class="rs">Mediciones y precio cerrados antes de empezar, con menos imprevistos.</span></li>
+          <li><span class="pb">Falta de mano de obra cualificada</span><span class="rs">El trabajo se concentra en taller, con equipos estables y especializados.</span></li>
+          <li><span class="pb">Calidad desigual</span><span class="rs">Los mismos procesos y controles en cada módulo.</span></li>
+          <li><span class="pb">Residuos y molestias</span><span class="rs">Material optimizado en fábrica y una estancia corta en la parcela.</span></li>
+        </ul>
+      </div>
+      <div class="case-sub"><span class="label">Modelos</span><p>Distintos modelos y fachadas sobre el mismo sistema modular.</p></div>
+      <div class="gal" id="caseGal"></div>
+      <div class="two">
+        <div><span class="label">Para quién tiene sentido</span><p>Para quien quiere su casa sin que la obra se convierta en un segundo trabajo. Para un promotor que necesita entregar antes y con menos riesgo. Para una parcela donde una obra larga molesta a los vecinos o encarece el proyecto.</p></div>
+        <div><span class="label">Lo que pide a cambio</span><p>Decidir pronto. Distribución, huecos y acabados se cierran en el proyecto, porque cambiar un módulo ya fabricado es caro. También hay que comprobar que la parcela admite el acceso del transporte y de la grúa.</p></div>
+      </div>
+    </div>
+  </article>
+  <div id="projects"></div>
+</section>
+
+<section id="areas" class="band">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">02 / Áreas de trabajo</span><span class="label">Francisco Recaite</span></div>
+    <div class="intro">
+      <h2>Del territorio a la experiencia.</h2>
+      <p>Una práctica que conecta el diseño del espacio, la viabilidad inmobiliaria y las herramientas digitales que ayudan a tomar mejores decisiones.</p>
+    </div>
+    <div class="cols">
+      <div class="col"><span class="n">01</span><h3>Diseño arquitectónico</h3><p>Viviendas y edificios, planos, modelado y visualización para convertir una idea en un proyecto comprensible y evaluable.</p></div>
+      <div class="col"><span class="n">02</span><h3>Desarrollo &amp; Real Estate</h3><p>Lectura de suelo, producto residencial y oportunidades para entender qué se puede desarrollar y cómo aportar valor.</p></div>
+      <div class="col"><span class="n">03</span><h3>IA aplicada</h3><p>Procesos y herramientas para investigar, diseñar, comunicar y trabajar con mayor precisión en arquitectura e inmobiliario.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="ideas" class="wrap">
+  <div class="sec-head"><span class="label">03 / Ideas</span><span class="label">10 artículos</span></div>
+  <div class="intro">
+    <h2>Pensar la ciudad, la vivienda y su futuro.</h2>
+    <p>Artículos sobre suelo, diseño de vivienda, clima, urbanismo e inteligencia artificial aplicada. Cada uno incluye un esquema que explica el concepto y una reflexión personal sobre el tema.</p>
+  </div>
+  <div id="feat"></div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section id="colaboraciones" class="band">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">04 / Colaboraciones</span><span class="label">Grupo Aloha, 2026</span></div>
+    <div class="intro">
+      <h2>Trabajo para Grupo Aloha.</h2>
+      <p>Promotora residencial en la Costa del Sol. Diseño de vivienda, visualización 3D y dirección visual de las piezas para redes: villas, interiores y vistas del conjunto bajo un mismo sistema de marca.</p>
+    </div>
+    <div class="shots" id="aloha"></div>
+  </div>
+</section>
+
+<section id="sobre-mi" class="wrap">
+  <div class="sec-head"><span class="label">05 / Sobre mí</span><span class="label">Málaga</span></div>
+  <div class="about">
+    <h2>Arquitectura, territorio y nuevas formas de habitar.</h2>
+    <div class="txt">
+      <p>Trabajo donde se cruzan el diseño arquitectónico, el desarrollo inmobiliario y la tecnología.</p>
+      <p>Diseño viviendas compactas y conjuntos residenciales pensados para el clima y la forma de vida del sur. Leo el suelo, defino el producto, dibujo, modelo y visualizo para que una idea pueda evaluarse antes de construirse.</p>
+      <p>Cursé estudios de arquitectura y llevo años en el sector inmobiliario y de la construcción en la Costa del Sol, donde además colaboro con Grupo Aloha en desarrollo de producto, visualización y automatización con IA.</p>
+    </div>
+    <div class="facts">
+      <div><span class="label">Proyectar</span>Diseño arquitectónico, planos, viviendas y edificios.</div>
+      <div><span class="label">Entender</span>Urbanismo, vivienda, territorio y mercado inmobiliario.</div>
+      <div><span class="label">Evolucionar</span>Tendencias e IA para ser mejores profesionales.</div>
+    </div>
+  </div>
+</section>
+</main>
+</div>
+
+<article id="article" hidden></article>
+
+<footer id="contacto">
+  <div class="wrap">
+    <span class="label">Francisco Recaite / Málaga</span>
+    <h2>Arquitectura para entender y transformar el territorio.</h2>
+    <div class="contact">
+      <div><span class="label">Email</span><span class="todo">Pendiente: añadir email de contacto</span></div>
+      <div><span class="label">Instagram</span><span class="todo">Pendiente: añadir usuario</span></div>
+      <div><span class="label">Ubicación</span><span>Málaga, Andalucía, España</span></div>
+    </div>
+    <div class="fine">
+      <span class="label">© 2026 Francisco Recaite</span>
+      <span class="label">Architecture / Real Estate / AI</span>
+    </div>
+  </div>
+</footer>
+
+<dialog id="lb" aria-label="Imagen ampliada">
+  <figure>
+    <img id="lbImg" alt="">
+    <figcaption>
+      <button type="button" id="lbPrev">← Anterior</button>
+      <span class="label" id="lbCap" style="color:#bbb"></span>
+      <button type="button" id="lbNext">Siguiente →</button>
+      <button type="button" id="lbClose">Cerrar</button>
+    </figcaption>
+  </figure>
+</dialog>
+
+<script>
+const PROJECTS=[
+ {t:"Visualización arquitectónica / Interiores",y:"Estudio",d:"La representación arquitectónica convierte un plano en un lugar reconocible. Las imágenes fotorrealistas permiten al cliente ver los espacios antes de que existan y entender cómo se habitan: la escala de cada estancia, el recorrido de la luz y el diálogo entre materiales. Son una herramienta para decidir con seguridad y para dar a un proyecto la fuerza que necesita para comunicarse.",
+  tags:["Visualización 3D","Renderizado","Interiorismo"],gal:true,
+  s:[
+   ["int-01","Salón comedor con salida al patio","Un único espacio lineal que remata en el ventanal al patio. La luz de poniente entra filtrada por cortinas de lino y dibuja sombras sobre paredes claras. Roble y gres gris aportan calidez sin cargar el ambiente."],
+   ["int-02","Salón comedor con ventanales al jardín","Carpinterías de suelo a techo convierten el jardín en el fondo del salón. Paramentos claros, nogal en la mesa y tejidos en tonos piedra dejan que la luz rasante sea la protagonista."],
+   ["int-03","Salón abierto al jardín","Volúmenes bajos y horizontales para no competir con la corredera. El mueble suspendido libera el suelo, el yute aporta textura y la luz entra de lado, a la altura de la mirada."],
+   ["int-18","Salón con panel de lamas","El panel de lamas de madera ordena la pared de la televisión y mejora la acústica. Un lucernario aporta luz cenital y la corredera abre el salón al jardín en toda su anchura."],
+   ["int-04","Salón con pared verde y acceso desde el jardín","Una pared en verde oliva ancla la zona de estar y la separa del acceso sin necesidad de tabiques. El negro de carpinterías y puerta ordena el conjunto, y la luz del atardecer suaviza los contrastes."],
+   ["int-05","Comedor junto al patio interior","El patio funciona como pozo de luz y ventilación. Las correderas en esquina disuelven el límite entre dentro y fuera, y la lámpara lineal sobre la mesa señala el lugar de reunión."],
+   ["int-06","Cocina y comedor de noche","De noche el espacio se lee por capas de luz: tira LED bajo los muebles, colgantes sobre la barra y una línea sobre la mesa. Cada zona tiene su propia iluminación y su propio ambiente."],
+   ["int-07","Cocina con isla y encimera oscura","Frentes lisos sin tiradores y encimera de piedra oscura para un volumen sereno. La isla organiza el recorrido entre trabajo y estancia, y la ventana corrida trae la luz justo sobre el fregadero."],
+   ["int-08","Cocina abierta al comedor","La cocina se recoge bajo un falso techo que define su ámbito sin cerrarla. Madera natural, blanco y acero en una paleta mínima, con la luz de la mañana entrando de lado hasta el comedor."],
+   ["int-22","Cocina verde de uso diario","Una cocina lineal pensada para la vida cotidiana. Frentes en verde bosque, columnas de madera y la ventana integrada en el centro de la composición, con luz que llega hasta la mesa del comedor."],
+   ["int-09","Cocina verde con barra","Frentes verdes y azulejo vertical en el mismo tono crean un fondo continuo. La barra de madera hace de transición con el salón y la luz baja de la tarde resalta cada textura."],
+   ["int-10","Cocina con mesa de office","Una cocina compacta resuelta en un solo frente. La madera ordena el almacenaje y una ventana estrecha basta para llenar el rincón de office de luz y sombras vegetales."],
+   ["int-19","Comedor junto a la cocina","Madera clara en mesa, sillas y lámparas para un ambiente cálido y continuo con la cocina. Las lámparas de varillas filtran la luz y la reparten de forma difusa sobre la mesa."],
+   ["int-11","Dormitorio principal","Un espacio de descanso con pocos materiales: pared en gris cálido, textiles naturales y madera clara. La luz natural se tamiza con lino y la artificial se reduce a puntos bajos y cálidos."],
+   ["int-12","Dormitorio con vistas al valle","La ventana enmarca el paisaje como un cuadro y la cama se orienta hacia ella. Cabecero tapizado, tonos arena y la luz rasante de la tarde componen un ambiente sereno."],
+   ["int-13","Dormitorio con pared azul y salida a la terraza","El azul profundo de la pared contrasta con la madera del armario y potencia el dibujo de las sombras. La corredera a la terraza prolonga el dormitorio hacia el exterior."],
+   ["int-14","Dormitorio con cama abatible y estantería","Mobiliario integrado que libera superficie útil: la cama se pliega dentro de un mueble de almacenaje y estantería. El verde de fondo y la madera clara hacen que un espacio pequeño se perciba amplio."],
+   ["int-15","Baño con doble lavabo y revestimiento acanalado","Un baño tratado como una sola pieza en tonos arena. El revestimiento acanalado hace vibrar la luz, y los lavabos de piedra y la grifería empotrada mantienen las líneas limpias."],
+   ["int-16","Baño con ducha de azulejo verde","La ducha se reviste de azulejo verde en formato vertical para ganar altura. Perfilería negra, madera en el mueble y un espejo retroiluminado que envuelve el espacio en una luz suave."],
+   ["int-21","Baño con ventana en la ducha","Una ventana dentro de la ducha lleva luz natural y vegetación al baño. Azulejo verde en vertical frente a paredes claras de gran formato, con perfiles negros que dibujan los límites."],
+   ["int-20","Baño con espejos ovalados","Porcelánico de gran formato con aspecto de piedra en suelo y paredes para reducir juntas. Los espejos retroiluminados y la luz bajo el mueble suspendido crean profundidad y calma."],
+   ["int-17","Patio interior ajardinado","Un patio pensado como una estancia más: pavimento drenante con césped, un árbol que da sombra y luz rasante que revela la textura del muro. Ventila e ilumina las piezas que lo rodean."]
+  ]},
+ {t:"Viviendas adosadas",y:"En desarrollo",d:"Un conjunto de viviendas de una planta dentro de un plan de vivienda accesible. La casa se resuelve una vez y se repite: tres módulos fabricados en taller, la misma distribución y los mismos materiales en cada unidad, para construir más vivienda, en menos tiempo y a un precio que se pueda pagar.",
+  tags:["Vivienda accesible","Construcción modular","Conjunto residencial"],gal:true,more:"ados",
+  lead:"La vivienda no es cara solo por el suelo. También lo es por la forma en que se produce.",
+  s:[["ados-1","Frente a la calle: un patio propio entre muros para cada casa"],["ados-2","Salón comedor con salida al jardín"],["ados-3","Del frente de la cocina al jardín, de fachada a fachada"],["ados-4","Cocina abierta al comedor"],["ados-5","Dormitorio principal"]]},
+ {t:"Edificio residencial con bajo comercial",y:"Estudio",wide:true,d:"El proyecto plantea un bloque residencial de media altura cuya envolvente se resuelve con bandas horizontales de GRC que recorren el perímetro y se curvan en las esquinas, disolviendo la rigidez del volumen. Cada banda actúa a la vez como antepecho, protección solar y jardinera: los forjados vuelan para generar terrazas profundas que funcionan como una estancia más, y la vegetación pasa a formar parte de la fachada. La ligereza y la capacidad de moldeado del GRC permiten espesores mínimos y curvaturas continuas difíciles de alcanzar con sistemas tradicionales, con un material que resiste la radiación y el ambiente salino del litoral. En planta baja, un frente comercial acristalado activa la esquina y devuelve la vida a la calle. El conjunto propone una nueva lectura de la vivienda en la Costa del Sol: horizontal, abierta al paisaje y pensada para habitar el exterior.",
+  tags:["Fachada de GRC","Uso mixto","Costa del Sol"],
+  s:[["839-25","full","Vista desde la calle"]]}
+];
+const MORE={ados:`
+ <div class="case-sub" style="padding-top:clamp(40px,6vw,80px)"><span class="label">El problema</span><div class="stack">
+  <p>Acceder a una vivienda se ha convertido en uno de los grandes problemas del país, y ya no afecta solo a quien tiene ingresos bajos.</p>
+  <p>Los precios suben mucho más rápido que los salarios, cada año se forman más hogares de los que se construyen y una generación entera retrasa su emancipación hasta pasados los treinta. Las ayudas a la demanda no bastan si no hay casas. Hace falta producir más vivienda, más rápido y a un coste que permita venderla a precios asumibles.</p>
+ </div></div>
+ <div class="stats">
+  <div><b>12,2 %</b><span>subida del precio de la vivienda en un año, segundo trimestre de 2026</span><span class="label">INE</span></div>
+  <div><b>750.000</b><span>viviendas de déficit acumulado entre 2021 y 2025</span><span class="label">Banco de España</span></div>
+  <div><b>8,4 años</b><span>de salario bruto íntegro para comprar una vivienda usada de 80 m² (2025)</span><span class="label">Fotocasa e InfoJobs</span></div>
+ </div>
+ <p class="stats-note">Fuentes: <a href="https://www.ine.es/dyngs/Prensa/IPV2T26.htm" target="_blank" rel="noopener">INE, Índice de Precios de Vivienda</a>, <a href="https://www.merca2.es/2026/06/19/banco-espana-deficit-vivienda-750000-2400856/" target="_blank" rel="noopener">Banco de España, Informe Anual 2025</a> y <a href="https://es.euronews.com/2026/06/10/comprar-una-vivienda-en-espana-ya-exige-mas-de-8-anos-de-salario-integro" target="_blank" rel="noopener">estudio de Fotocasa e InfoJobs</a>. La edad media de emancipación es de 30,2 años según el <a href="https://www.idealista.com/news/etiquetas/consejo-de-la-juventud-de-espana" target="_blank" rel="noopener">Consejo de la Juventud de España</a>.</p>
+ <div class="case-sub" style="padding-top:0"><span class="label">La solución</span><div class="stack">
+  <p>La pregunta deja de ser cuánto cuesta construir una casa y pasa a ser cuánto cuesta construir cien iguales y bien hechas.</p>
+  <p>Una promoción convencional repite en cada vivienda un proceso casi artesanal: estructura, cerramientos, instalaciones y acabados, uno detrás de otro, a la intemperie y dependiendo de los oficios disponibles. Aquí el esfuerzo se concentra al principio. La vivienda se diseña y se resuelve una sola vez, hasta el último detalle, y a partir de ese momento se fabrica en serie.</p>
+  <p>Cada casa se levanta con tres módulos de hormigón armado de 7,50 × 3,00 metros fabricados en taller. Suelo, cubierta y testeros forman un único cajón estructural, hecho con la precisión de una pieza industrial. Los módulos llegan a la parcela en transporte especial, se colocan sobre la solera de cimentación con tres izados de grúa y se cierran con paneles de fachada de GRC que también vienen fabricados, con su estructura metálica ya incorporada.</p>
+  <p>A partir de ahí el interior se completa en seco: tabiques y trasdosados de placa de yeso, instalaciones, carpinterías y pavimento, con los mismos planos, los mismos despieces y los mismos materiales en cada vivienda. La parte más pesada y lenta de una obra, la estructura, pasa de meses a días. El resto se convierte en un trabajo repetitivo, limpio y medible, y cada casa que se suma a la serie se hace con menos tiempo y menos incertidumbre que la anterior.</p>
+ </div></div>
+ <div class="case-sub" style="padding-top:0"><span class="label">Viviendas en serie, en meses</span><p>La clave es que las fases que en una obra tradicional van una detrás de otra aquí avanzan a la vez.</p></div>
+ <div class="pillars">
+  <div class="col"><span class="n">A</span><h3>Un proyecto para todas</h3><p>Un único proyecto tipo, verificado y cerrado, sirve para cada unidad del conjunto. No se rediseña ni se improvisa en cada parcela.</p></div>
+  <div class="col"><span class="n">B</span><h3>Taller y parcela a la vez</h3><p>Mientras en el terreno se urbaniza y se hormigona la solera, en el taller se fabrican los módulos de hormigón y los paneles de fachada.</p></div>
+  <div class="col"><span class="n">C</span><h3>Producción en cadena</h3><p>Los módulos salen a un ritmo constante, bajo techo, sin depender de la lluvia ni de la disponibilidad de cuadrillas.</p></div>
+  <div class="col"><span class="n">D</span><h3>Estructura en días</h3><p>Cada vivienda son tres izados de grúa. En pocos días la estructura y la fachada están cerradas, y el interior se termina en seco, sin esperas de fraguado.</p></div>
+ </div>
+ <p class="stats-note" style="margin-bottom:0">Según el Gobierno de España, la construcción industrializada puede reducir los plazos de obra entre un 20&nbsp;% y un 60&nbsp;% (<a href="https://www.alimarket.es/construccion/noticia_amp/407290/el-gobierno-lanza-el-perte-de-la-vivienda-industrializada--con-una-inversion-de-1-300-m-" target="_blank" rel="noopener">PERTE de vivienda industrializada</a>).</p>
+ <div class="solves">
+  <div class="solves-h"><span class="label">Por qué ayuda al problema de la vivienda</span><h3>Si el cuello de botella es construir, hay que construir de otra manera.</h3></div>
+  <ul>
+   <li><span class="k">Más oferta, antes</span><span class="rs">Producir más viviendas en menos tiempo es la respuesta más directa a un déficit que crece cada año.</span></li>
+   <li><span class="k">Precio más bajo</span><span class="rs">Menos meses de obra son menos intereses de financiación y menos costes indirectos, y ese ahorro puede llegar al precio de venta.</span></li>
+   <li><span class="k">Precio cierto</span><span class="rs">Con el coste cerrado desde el proyecto se puede fijar un precio asequible y mantenerlo. Es la base para vivienda protegida, cooperativas y colaboración público-privada.</span></li>
+   <li><span class="k">Menos dependencia de la obra</span><span class="rs">Al sector le faltan oficios cualificados. El taller trabaja con equipos estables y necesita menos personas en la parcela.</span></li>
+   <li><span class="k">Más barata de vivir</span><span class="rs">Una envolvente fabricada con precisión pierde menos energía. Una vivienda asequible también es la que cuesta poco mantener.</span></li>
+  </ul>
+ </div>
+ <div class="case-sub"><span class="label">Frente a la obra convencional</span><p>Las ventajas son claras, pero no salen gratis. Este sistema funciona porque obliga a decidir pronto y a pensar en el transporte.</p></div>
+ <div class="vs-wrap"><table class="vs">
+  <thead><tr><th></th><th>Obra convencional</th><th>Vivienda modular en serie</th></tr></thead>
+  <tbody>
+   <tr><td>Plazo</td><td>Fases sucesivas, expuestas al clima</td><td>Taller y parcela en paralelo, con calendario fijo</td></tr>
+   <tr><td>Coste</td><td>Se ajusta durante la obra</td><td>Cerrado en el proyecto, con pocos imprevistos</td></tr>
+   <tr><td>Calidad</td><td>Depende de cada cuadrilla</td><td>Mismos procesos y controles en cada módulo</td></tr>
+   <tr><td>Escala</td><td>Cada vivienda más es casi otra obra</td><td>Cada vivienda más es una unidad más de la serie</td></tr>
+   <tr><td>Entorno</td><td>Meses de ruido, polvo y camiones</td><td>Menos residuos y una estancia corta en la parcela</td></tr>
+   <tr class="give"><td>Cambios</td><td>Posibles hasta muy tarde</td><td>Se decide todo en proyecto; cambiar después es caro</td></tr>
+   <tr class="give"><td>Parcela</td><td>Admite casi cualquier acceso</td><td>Necesita acceso para el transporte y la grúa</td></tr>
+  </tbody>
+ </table></div>
+ <div class="case-sub"><span class="label">La vivienda</span><div class="stack">
+  <p>Dos dormitorios, un baño y un salón comedor cocina pasante en 59,65 m² útiles.</p>
+  <p>La planta se ordena en dos bandas. A un lado, los dormitorios y el baño, con armarios entre ellos que hacen de colchón acústico. Al otro, un único espacio de día que atraviesa la casa de fachada a fachada y se abre al exterior por los dos extremos. Delante, un patio propio entre muros que separa cada acceso del vecino. Cada metro está dibujado para que una vivienda compacta se viva como una vivienda completa.</p>
+ </div></div>
+ <div class="plan">
+  <div class="plan-view">
+   <div class="plan-tabs" role="group" aria-label="Tipo de planta"><button type="button" aria-selected="true">Planta 3D</button><button type="button" aria-selected="false">Plano acotado</button></div>
+   <button type="button" class="plan-stage" aria-label="Ampliar planta"><img class="on" src="img/ados-planta-3d.jpg" data-cap="Planta 3D amueblada" alt="Planta en 3D de la vivienda: dos dormitorios, baño y salón comedor cocina" loading="lazy"><img src="img/ados-planta-cotas.jpg" data-cap="Planta de distribución acotada" alt="Plano de distribución con cotas en metros" loading="lazy"></button>
+  </div>
+  <div class="plan-data">
+   <span class="label">Superficies</span>
+   <table>
+    <tr><td>Dormitorio 1</td><td>11,59 m²</td></tr>
+    <tr><td>Armario dormitorio 1</td><td>1,27 m²</td></tr>
+    <tr><td>Baño</td><td>3,32 m²</td></tr>
+    <tr><td>Distribuidor</td><td>1,63 m²</td></tr>
+    <tr><td>Armario dormitorio 2</td><td>1,37 m²</td></tr>
+    <tr><td>Dormitorio 2</td><td>9,84 m²</td></tr>
+    <tr><td>Salón comedor cocina</td><td>30,64 m²</td></tr>
+    <tr class="tot"><td>Superficie útil</td><td>59,65 m²</td></tr>
+    <tr class="tot"><td>Superficie construida</td><td>69,45 m²</td></tr>
+   </table>
+   <p class="plan-foot">Envolvente de 7,50 × 9,26 m formada por tres módulos de 3,00 m.</p>
+  </div>
+ </div>
+ <div class="two">
+  <div><span class="label">Lo que hace falta</span><p>Suelo finalista a un precio razonable y una tramitación que no se coma la ventaja de plazo. La construcción industrializada ahorra meses de obra, pero si la licencia tarda un año, ese ahorro se pierde. Por eso la colaboración entre administraciones y promotores es parte del proyecto, no un trámite.</p></div>
+  <div><span class="label">Lo que defiendo</span><p>La vivienda accesible no tiene por qué ser vivienda de peor calidad. Con diseño, estandarización y procesos industriales se puede construir más y mejor. En España apenas un 5 % de la vivienda se construye de forma industrializada, frente a cerca del 20 % en Alemania, Países Bajos o Reino Unido. El margen para mejorar es enorme (<a href="https://www.alimarket.es/construccion/noticia_amp/407290/el-gobierno-lanza-el-perte-de-la-vivienda-industrializada--con-una-inversion-de-1-300-m-" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">fuente</a>).</p></div>
+ </div>`};
+const ALOHA=[["748-291","full","Vivienda unifamiliar, vista de acceso"]].concat([1,7,19,29,21,22,12,8,33,28,30,31].map((n,i)=>["ig-"+n,"w3","Pieza para redes "+String(i+1).padStart(2,"0")]));
+const ARTS=[{"slug": "comprar-terreno", "cat": "Suelo & Real Estate", "cover": "839-8", "title": "Antes de comprar un terreno: seis comprobaciones que cambian el precio", "lead": "El precio de una parcela dice poco si no se sabe qué se puede construir en ella, cuánto cuesta dejarla lista para edificar y para quién se va a construir. Este es el orden en que conviene estudiarla antes de firmar.", "secs": [{"h": "Qué clase de suelo es", "p": ["En Andalucía, la ley urbanística vigente (LISTA, Ley 7/2021) reconoce dos clases de suelo: urbano y rústico. El antiguo suelo urbanizable desapareció como clase. La primera pregunta es en cuál de las dos está la parcela, porque de ello depende casi todo lo demás.", "En suelo urbano hay que saber además si la parcela ya es solar o si está dentro de un ámbito pendiente de transformación, con cargas de urbanización por repartir. En suelo rústico, la vivienda aislada es una actuación extraordinaria, sujeta a autorización previa y a condiciones estrictas. Un anuncio que dice «finca con posibilidad de construir» no acredita nada."], "box": null}, {"h": "Edificabilidad y ocupación no son lo mismo", "p": ["La edificabilidad indica cuántos metros de techo se pueden construir. La ocupación indica cuánta superficie de parcela puede cubrir la huella del edificio. A eso se suman altura máxima, número de plantas y separación a linderos.", "Hay que leer también qué computa: en muchos planes los sótanos no cuentan y los porches cubiertos cuentan en parte. Esa letra pequeña mueve el resultado un diez o un quince por ciento."], "box": {"t": "Ejemplo numérico (valores ilustrativos, no de un plan concreto)", "l": ["Parcela: 500 m²", "Edificabilidad 0,30 m²t/m²s → 150 m² de techo", "Ocupación máxima 25 % → 125 m² de huella", "Dos plantas de 75 m² caben. Una sola planta de 150 m², no."]}}, {"h": "La forma decide lo aprovechable", "p": ["Dos parcelas con la misma superficie y la misma norma pueden dar viviendas muy distintas. Un frente estrecho, una pendiente fuerte o un lindero irregular reducen el área donde realmente se puede implantar la casa una vez aplicadas las separaciones.", "Dibujar el área de movimiento, es decir, la parcela menos los retranqueos, es un ejercicio de diez minutos que evita muchas sorpresas. Si la pendiente supera el 15 o 20 %, hay que contar con muros de contención, movimiento de tierras y un acceso rodado más caro."], "box": null}, {"h": "Servicios, cargas y costes pendientes", "p": ["Una parcela es solar cuando tiene acceso rodado pavimentado, agua, saneamiento y electricidad a pie de parcela. Si falta alguno, llevarlo corre por cuenta del comprador. Conviene pedir a las compañías suministradoras el punto de conexión y su coste antes de la compra.", "En el Registro de la Propiedad, la nota simple muestra hipotecas, servidumbres y afecciones urbanísticas. El Catastro sirve para comprobar superficie y linderos, pero no acredita la propiedad. Si la superficie registral y la catastral no coinciden, hay que resolverlo antes de comprar."], "box": {"t": "Lo que suele olvidarse en el presupuesto", "l": ["Impuestos de la compra: ITP si vende un particular, IVA más AJD si vende una empresa. Confirma los tipos vigentes.", "Estudio geotécnico y levantamiento topográfico", "Honorarios de proyecto y dirección de obra", "Licencia de obras e ICIO", "Acometidas, vallado y urbanización interior"]}}, {"h": "Para quién vas a construir", "p": ["Si la vivienda es para vender o alquilar, el producto se define desde la demanda de la zona y no desde el máximo que permite la norma. Agotar la edificabilidad con una casa que nadie busca en ese barrio es peor negocio que construir menos metros bien dirigidos.", "Mira qué tipologías se venden alrededor, a qué precio por metro y en cuánto tiempo. Con ese dato y el coste total se calcula el valor residual: lo máximo que se puede pagar por el suelo para que la operación tenga sentido."], "box": null}, {"h": "Pide la información por escrito", "p": ["La consulta verbal en ventanilla orienta, pero no compromete. Lo que protege es un informe urbanístico emitido por el ayuntamiento sobre esa parcela concreta. En Málaga se solicita a la Gerencia Municipal de Urbanismo, y recoge clasificación, calificación, ordenanza aplicable y régimen de usos.", "Con el informe, la nota simple, la ficha catastral y un encaje previo dibujado por un técnico, la decisión de compra se toma con datos. Si el vendedor no da tiempo para reunirlos, esa prisa ya es información."], "box": null}], "check": ["Clase de suelo y situación (solar o ámbito pendiente)", "Edificabilidad, ocupación, altura y retranqueos", "Área de movimiento dibujada sobre un topográfico", "Servicios a pie de parcela y coste de acometidas", "Nota simple y coincidencia con Catastro", "Informe urbanístico municipal por escrito", "Demanda de la zona y valor residual del suelo"], "q": "¿Qué comprobarías primero?", "cta": "Guarda esta guía para preparar el estudio de tu próxima parcela.", "src": [["Ley 7/2021 (LISTA): resumen del régimen del suelo, Garrigues", "https://www.garrigues.com/es_ES/noticia/andalucia-estrena-nuevo-modelo-urbanistico-mas-flexible"], ["Gerencia Municipal de Urbanismo de Málaga", "https://urbanismo.malaga.eu"], ["Sede Electrónica del Catastro", "https://www.sedecatastro.gob.es"]], "min": 3, "ref": "Comprar suelo es comprar una hipótesis. El precio de un anuncio resume lo que el vendedor espera, no lo que la parcela permite. Por eso me interesa más el orden de las preguntas que una respuesta rápida: primero qué dice la norma, después qué deja la forma y solo al final cuánto vale. Muchas operaciones no fracasan en la obra, sino en la tarde que nadie dedicó a leer el planeamiento antes de firmar."}, {"slug": "disenar-para-el-calor", "cat": "Arquitectura & Clima", "cover": "839-26", "title": "Diseñar para el calor: el confort se decide en el proyecto", "lead": "En la costa de Málaga el problema térmico del año es el verano. Una vivienda que depende solo del aire acondicionado para ser habitable está mal resuelta desde el plano. Estas son las decisiones que más pesan, por orden de impacto.", "secs": [{"h": "Leer el clima antes de dibujar", "p": ["Málaga capital está en la zona climática A3 del Código Técnico: el invierno más suave de la península y un verano de severidad media-alta. Eso invierte las prioridades respecto a un clima continental. Aquí importa más evitar que el sol entre en verano que retener calor en invierno.", "A escala de parcela hay que anotar tres cosas: de dónde viene la brisa en las tardes de verano, qué sombras arrojan los vecinos y la vegetación, y qué orientaciones quedan expuestas al sol bajo de poniente."], "box": null}, {"h": "Orientación y tamaño de los huecos", "p": ["La fachada sur es la más fácil de proteger, porque en verano el sol está muy alto. Las fachadas este y oeste reciben sol bajo, casi horizontal, que ningún voladizo detiene. La de poniente es la peor, porque coincide con las horas de más temperatura.", "La regla práctica: huecos grandes a sur con protección horizontal, huecos contenidos a este y oeste con protección exterior móvil, y aperturas a norte para luz estable y ventilación."], "box": {"t": "El sol en Málaga (latitud 36,7° N), a mediodía solar", "l": ["Solsticio de verano: altura solar de unos 77°", "Solsticio de invierno: altura solar de unos 30°", "Un hueco a sur de 2,20 m de alto queda en sombra completa en junio con un vuelo de unos 50 cm", "Ese mismo vuelo deja entrar el sol hasta el fondo en diciembre"]}}, {"h": "La sombra va por fuera", "p": ["Una protección exterior detiene la radiación antes de que atraviese el vidrio. Una cortina interior la detiene cuando el calor ya está dentro. La diferencia de eficacia es muy grande, y por eso persianas, contraventanas, lamas y toldos pertenecen al proyecto y no a la decoración.", "El Código Técnico lo exige con un parámetro propio, el control solar. En vivienda nueva, las ganancias solares de julio a través de los huecos, con las protecciones móviles activadas, no pueden superar 2,00 kWh por metro cuadrado útil al mes. Un ventanal a poniente sin protección exterior suele bastar para incumplirlo."], "box": null}, {"h": "Ventilar cuando conviene", "p": ["La ventilación cruzada funciona si hay huecos en fachadas opuestas y un recorrido de aire sin obstáculos entre ellos. Una vivienda con una sola orientación no ventila bien por mucho que se abran las ventanas.", "Ventilar refresca solo cuando el aire exterior está más fresco que el interior: de noche y a primera hora. Durante el día de calor, la casa se cierra y se sombrea. Si la estructura tiene masa, como forjados y muros de hormigón o fábrica, acumula el fresco nocturno y lo devuelve durante el día."], "box": null}, {"h": "Envolvente, cubierta y color", "p": ["En una vivienda de una o dos plantas, la cubierta es la superficie que más radiación recibe en verano. Aislarla bien y terminarla en color claro rinde más que cualquier mejora en fachada. Los acabados claros en muros reducen también la temperatura superficial.", "El vidrio se elige por orientación. A poniente interesa un factor solar bajo. A sur, con buen voladizo, puede ser más alto para aprovechar el sol de invierno."], "box": null}, {"h": "Lo que ya sabía el Mediterráneo", "p": ["El patio, la calle estrecha, el muro encalado, la persiana enrollable por fuera, el porche profundo y la parra son respuestas a este clima afinadas durante siglos. No hace falta copiarlas como estilo. Sirve entender qué problema resuelve cada una y traducirlo al proyecto actual.", "Un porche integrado en el volumen, como el de la imagen, cumple tres funciones: sombrea los huecos principales, crea una estancia exterior utilizable en verano y protege el acceso."], "box": null}], "check": ["Huecos principales a sur con protección horizontal calculada", "Protección exterior móvil en este y oeste", "Dos orientaciones opuestas para ventilación cruzada", "Cubierta bien aislada y de color claro", "Masa interior expuesta para acumular fresco nocturno", "Sombra exterior: porche, pérgola o arbolado de hoja caduca", "Control solar verificado según CTE DB-HE"], "q": "¿Dónde encuentras confort en verano?", "cta": "Piensa en un patio, una calle o una habitación que funcione especialmente bien y pregúntate por qué.", "src": [["CTE DB-HE, sección HE1: control solar de la envolvente (tabla 3.1.2)", "https://normatia.com/es/normativa/cte-db-he/2022/seccion-he-1-condiciones-para-el-control-de-la-demanda-energetica/"], ["Código Técnico de la Edificación", "https://www.codigotecnico.org"]], "min": 3, "ref": "Durante décadas hemos confiado el confort a las máquinas y hemos olvidado que la arquitectura ya sabía resolverlo. En el sur, el verano es el examen de cualquier vivienda. Un vuelo bien calculado, una persiana exterior y una ventilación cruzada cuestan menos que un equipo de climatización y no se averían. Diseñar para el calor no es una cuestión de estilo: es una responsabilidad con quien vive en la casa y con la factura que pagará cada mes."}, {"slug": "casa-antes-del-plano", "cat": "Diseño arquitectónico", "cover": "839-10", "title": "Una casa empieza antes del plano", "lead": "El primer documento de un proyecto de vivienda es una descripción de cómo vive quien la va a habitar. Cuanto más precisa es esa descripción, menos cambios hay después, cuando cambiar cuesta dinero.", "secs": [{"h": "Quién va a habitarla, hoy y dentro de diez años", "p": ["Un programa de «tres dormitorios y dos baños» describe muy poco. Lo que orienta el diseño es saber cuántas personas viven, de qué edades, quién trabaja en casa, con qué frecuencia hay invitados y qué va a cambiar en la próxima década: hijos que llegan o se van, un familiar mayor, un cambio de trabajo.", "Una habitación que hoy es despacho y mañana dormitorio necesita desde el principio una ventana correcta, un armario posible y un baño cerca."], "box": null}, {"h": "Cómo transcurre un día", "p": ["Conviene recorrer por escrito un día laborable y uno festivo. Dónde se deja lo que se trae de la calle, dónde se desayuna, por dónde entra la compra, dónde se tiende, dónde se guardan las bicicletas. De ahí salen las relaciones entre espacios, que importan más que sus superficies.", "Los recorridos cortos entre acceso, cocina y almacenaje ahorran tiempo todos los días. Un lavadero mal situado se sufre durante veinte años."], "box": null}, {"h": "Privacidad y encuentro", "p": ["Toda vivienda tiene una zona de día y una de noche, y entre ambas distintos grados de intimidad. La pregunta útil es cuánto contacto visual y acústico se quiere entre ellas. Una cocina abierta al salón favorece la vida en común y reparte ruido y olores. Una puerta corredera bien pensada permite las dos situaciones."], "box": null}, {"h": "El lugar y la luz", "p": ["La orientación asigna las estancias: las de día hacia la mejor luz y las vistas, los dormitorios donde el sol de la mañana ayude y el de la tarde no castigue. Las piezas servidoras, como baños, almacenes y escalera, pueden ocupar la orientación peor y hacer de colchón térmico.", "Antes de dibujar hay que estar en la parcela a varias horas y anotar de dónde viene el ruido, qué se ve desde cada punto y qué conviene tapar."], "box": null}, {"h": "El exterior también es programa", "p": ["En este clima, la terraza, el porche o el patio se usan muchos meses al año y merecen la misma atención que el salón. Un exterior útil tiene sombra, está pegado a la cocina o a la estancia principal y mide lo suficiente para una mesa con sillas que se puedan retirar, lo que pide unos tres metros de fondo."], "box": null}, {"h": "Ahora sí: dibujar", "p": ["Con lo anterior se redacta un programa de necesidades de una o dos páginas, con prioridades ordenadas y un presupuesto objetivo. Ese documento sirve para comparar las propuestas con algo más sólido que el gusto del momento. Los primeros croquis son hipótesis para probar el programa, y conviene tener más de uno."], "box": null}], "check": ["Personas, edades y cambios previstos en diez años", "Recorrido escrito de un día laborable y uno festivo", "Tres prioridades ordenadas y tres renuncias aceptables", "Muebles y objetos que deben caber, con medidas", "Necesidades de almacenaje, por tipo", "Uso previsto del exterior y horas de uso", "Presupuesto objetivo con margen"], "q": "¿Qué espacio es esencial para ti?", "cta": "Piensa en una rutina que tu vivienda debería hacer más fácil.", "src": [], "min": 3, "ref": "Las mejores casas que conozco no son las más grandes, sino las que entienden a quien vive en ellas. Antes de dibujar la primera línea hay una conversación que casi siempre se acorta por prisa, y es la más rentable de todo el proyecto. Un plano vistoso que no responde a una rutina real envejece mal. Uno sencillo que acierta en los recorridos de cada día se agradece durante veinte años."}, {"slug": "valor-mas-alla-de-los-m2", "cat": "Diseño & Real Estate", "cover": "839-20", "title": "El valor de una vivienda va más allá de los metros cuadrados", "lead": "El precio por metro cuadrado permite comparar anuncios, pero mide mal la calidad. Dos pisos de 90 m² pueden ofrecer una vida muy distinta. Estos son los factores que conviene mirar en un plano o en una visita.", "secs": [{"h": "Distribución útil", "p": ["Lo primero es cuánta superficie se destina a pasillos y distribuidores. En una vivienda bien resuelta ronda el 8 o 10 %. Por encima del 15 % se están pagando metros que no se habitan.", "Lo segundo son las proporciones. Un salón de 20 m² con un lado de 2,80 m se amuebla peor que uno de 18 m² bien proporcionado. Un dormitorio doble necesita un ancho libre de unos 2,60 m para cama y paso a ambos lados."], "box": {"t": "Prueba rápida sobre un plano", "l": ["Dibuja los muebles a escala: cama de 1,50 × 2,00, mesa para seis, sofá de tres plazas", "Comprueba que las puertas abren sin chocar", "Cuenta los metros lineales de armario: lo razonable es 1 m por persona como mínimo", "Marca el recorrido de la entrada a la cocina con la compra"]}}, {"h": "Luz y ventilación", "p": ["Importa la orientación de la estancia principal, la profundidad de las piezas respecto a la ventana y si la vivienda tiene dos fachadas opuestas. La ventilación cruzada reduce el uso de climatización buena parte del año, y una vivienda pasante vale más que una con una sola orientación aunque midan lo mismo.", "Como referencia, la luz natural llega con calidad hasta una profundidad de aproximadamente dos veces la altura del hueco."], "box": null}, {"h": "Exterior habitable", "p": ["Una terraza de 1,20 m de fondo solo admite una fila de sillas. A partir de 2 m cabe una mesa, y con 3 m funciona como una estancia más. La sombra, la privacidad frente a los vecinos y la conexión directa con el salón o la cocina determinan si se usa de verdad."], "box": null}, {"h": "Capacidad de adaptación", "p": ["Una vivienda se adapta bien cuando su estructura y sus instalaciones permiten cambiar la distribución sin obra mayor: tabiques que no son portantes, huecos regulares en fachada y baños agrupados en vertical. Una habitación junto al salón que pueda sumarse o separarse da margen a etapas distintas de la vida y amplía el número de compradores futuros."], "box": null}, {"h": "Uso y mantenimiento", "p": ["El coste de una vivienda incluye lo que cuesta habitarla. Conviene mirar la calificación energética, el tipo de carpintería, las protecciones solares, los materiales de fachada y las cuotas de comunidad. Una piscina, un jardín comunitario o un ascensor adicional son prestaciones que se pagan cada mes."], "box": null}, {"h": "Diseño y viabilidad", "p": ["Para quien promueve, estos factores también son negocio. Una planta eficiente vende más superficie útil por cada metro construido. Una vivienda con buena luz y exterior útil se vende antes y sostiene mejor el precio. Decidirlo en el anteproyecto cuesta horas de trabajo, y corregirlo en obra cuesta mucho más."], "box": null}], "check": ["Porcentaje de superficie en pasillos", "Muebles reales dibujados a escala", "Orientación de la estancia principal", "Dos fachadas opuestas para ventilar", "Fondo y sombra de la terraza", "Metros lineales de almacenaje", "Calificación energética y cuota de comunidad"], "q": "¿Qué priorizas al elegir una casa?", "cta": "Ordena tus tres prioridades entre luz, ubicación, distribución, exterior y superficie.", "src": [], "min": 3, "ref": "El metro cuadrado se ha convertido en la moneda del mercado, pero no mide lo que importa. Habitamos luz, proporción, aire y la posibilidad de salir afuera, no superficie. Cuando se diseña o se compra pensando solo en metros, se premian los pasillos y se castiga la calidad. Cambiar esa mirada es una tarea compartida: de quien proyecta, de quien promueve y también de quien elige dónde vivir."}, {"slug": "render-que-explica", "cat": "Visualización arquitectónica", "cover": "839-19", "title": "Un render también debe explicar", "lead": "Una imagen de proyecto sirve para tomar decisiones antes de construir. Cuando solo busca seducir, genera expectativas que la obra no cumple. Estas son las condiciones para que una visualización sea útil y honesta.", "secs": [{"h": "Mostrar la escala real", "p": ["La cámara define cómo se percibe el tamaño. Una altura de ojo de 1,60 m y una focal equivalente a 24–35 mm se parecen a la experiencia de estar allí. Un gran angular extremo convierte un salón de 20 m² en uno de 35.", "Los objetos de referencia tienen que estar a escala: una cama de 1,50 m, una silla, una persona de estatura normal. Reducir el mobiliario para que la habitación parezca mayor es una práctica extendida y es engañosa."], "box": null}, {"h": "Hacer legibles los materiales", "p": ["Cada material de la imagen debería corresponder a uno de la memoria de calidades, con su formato, su despiece y su junta. Si el render muestra un panel continuo de madera y el presupuesto contempla un laminado, hay una discrepancia que conviene resolver antes de enseñarlo.", "Lo mismo aplica a carpinterías, barandillas y remates. Son los elementos que más cambian entre imagen y obra."], "box": null}, {"h": "Trabajar la luz con intención", "p": ["La hora dorada favorece a cualquier edificio. Para evaluar un proyecto hace falta también una imagen a mediodía de verano, que muestre cómo funcionan las sombras, y otra de día nublado o de invierno. La luz de la imagen tiene que ser coherente con la orientación real de la parcela."], "box": {"t": "Juego mínimo para evaluar una vivienda", "l": ["Exterior a mediodía, con sombras reales según orientación", "Exterior al atardecer, para la atmósfera", "Estancia principal a altura de ojo", "Vista que muestre la relación interior y exterior", "Planta amueblada a escala junto a las imágenes"]}}, {"h": "Enseñar las relaciones", "p": ["Las imágenes más útiles muestran cómo se conectan los espacios: lo que se ve desde la cocina, cómo se llega al patio, qué queda a la vista desde la calle. Una secuencia corta de vistas situadas sobre la planta explica más que una sola imagen espectacular."], "box": null}, {"h": "Evaluar, además de presentar", "p": ["El render es una herramienta de diseño. Comparar dos envolventes sobre el mismo volumen, como lamas de madera frente a un marco claro, permite decidir con el cliente antes de comprometer presupuesto. Para eso las variantes tienen que compartir cámara, luz y entorno, de modo que la diferencia visible sea solo la que se está decidiendo."], "box": null}, {"h": "Coherencia entre imagen y planos", "p": ["La imagen debe salir del mismo modelo que los planos. Las herramientas de IA generan atmósferas con rapidez, pero también inventan huecos, cambian proporciones y añaden elementos que no existen en el proyecto. Sirven para explorar. Lo que se entrega a un cliente como representación de su vivienda tiene que estar comprobado contra planta, alzado y sección."], "box": null}], "check": ["Cámara a altura de ojo y focal moderada", "Mobiliario y personas a escala real", "Materiales que coinciden con la memoria de calidades", "Luz coherente con la orientación", "Al menos una vista sin hora dorada", "Variantes con la misma cámara y la misma luz", "Imagen verificada contra los planos"], "q": "¿Qué te ayuda a entender un espacio?", "cta": "Una planta, una sección, un render o un recorrido: cada persona lee mejor con uno distinto.", "src": [], "min": 3, "ref": "La imagen se ha vuelto tan poderosa que a veces sustituye al proyecto en lugar de explicarlo. Un render honesto no es el que menos seduce, sino el que promete lo que se va a construir. Entiendo la visualización como una herramienta de decisión y de confianza: si el cliente reconoce en su casa terminada lo que vio en la pantalla, la imagen ha hecho su trabajo."}, {"slug": "ia-y-criterio", "cat": "Arquitectura & IA", "cover": "839-29", "title": "IA y criterio arquitectónico: qué delegar y qué no", "lead": "La inteligencia artificial acelera tareas concretas del trabajo de proyecto. No asume responsabilidad sobre el resultado. La cuestión práctica es saber en qué partes del proceso ayuda, con qué riesgo, y cómo se verifica lo que produce.", "secs": [{"h": "Investigar con más orden", "p": ["Un modelo de lenguaje ayuda a preparar un encargo: ordenar referencias, proponer preguntas para el cliente, resumir tipologías comparables. Rinde mejor cuando se le da contexto concreto, como el programa, la superficie, el clima y el presupuesto.", "Lo que afirma sobre normativa, precios o datos de mercado hay que contrastarlo con la fuente original. Puede citar artículos que no existen o normas derogadas con total seguridad en el tono."], "box": null}, {"h": "Explorar alternativas", "p": ["La generación de imágenes sirve para discutir atmósferas y lenguajes de fachada al principio, cuando todavía no hay modelo. Diez variantes en una hora ayudan al cliente a decir lo que quiere y lo que no.", "Una imagen sugerente todavía no es un proyecto. Hay que comprobar que eso cabe en la parcela, cumple la norma, tiene estructura y se puede pagar."], "box": null}, {"h": "Leer documentación", "p": ["Resumir un pliego, unas ordenanzas o un informe técnico ahorra tiempo de primera lectura y ayuda a localizar los apartados relevantes. La decisión se toma sobre el texto original. Un resumen puede omitir justo la excepción que afecta a la parcela, y el modelo no sabe si el documento está vigente."], "box": null}, {"h": "Comunicar una propuesta", "p": ["Redactar la memoria descriptiva, adaptar un texto a distintos públicos o estructurar una presentación son tareas donde la IA rinde bien. El criterio que hay que mantener es de fidelidad: el texto y las imágenes deben describir lo que se ha proyectado, sin adornarlo."], "box": null}, {"h": "Automatizar lo repetitivo", "p": ["Clasificar archivos, nombrar planos, extraer mediciones a una hoja de cálculo, redactar actas de reunión o preparar borradores de correo son buenos candidatos. Antes de automatizar una tarea conviene definir quién revisa el resultado y con qué frecuencia."], "box": null}, {"h": "El criterio y la firma siguen siendo de las personas", "p": ["Las decisiones con consecuencias legales, económicas o de seguridad necesitan un responsable identificable. Dimensiones, cumplimiento normativo, estructura y presupuesto se comprueban por un técnico competente, con independencia de la herramienta que haya producido el borrador."], "box": null}], "check": ["Contexto concreto en cada consulta", "Normativa y datos contrastados con la fuente", "Imágenes generadas verificadas contra planos", "Resúmenes usados solo para orientar la lectura", "Responsable de revisión definido para cada automatización", "Datos de clientes fuera de herramientas sin garantías de privacidad"], "q": "¿Dónde te ayudaría más?", "cta": "Identifica la parte de tu proceso que más tiempo consume y menos criterio exige.", "src": [], "min": 3, "ref": "La inteligencia artificial no cambia la pregunta de fondo de nuestro oficio: quién responde de lo que se construye. Cambia la velocidad a la que llegamos a un primer borrador. El riesgo no es que la herramienta se equivoque, sino que dejemos de revisar porque el resultado parece convincente. Usarla bien exige más criterio, no menos."}, {"slug": "cinco-usos-de-ia", "cat": "IA aplicada", "cover": "839-17", "title": "Cinco usos de IA para empezar en un estudio o una promotora", "lead": "Cinco tareas concretas, ordenadas de menor a mayor dificultad, con lo que hace falta para ponerlas en marcha y cómo saber si de verdad ahorran tiempo.", "secs": [{"h": "1. Preparar reuniones y encargos", "p": ["Antes de una primera reunión, pide al modelo un cuestionario adaptado al tipo de cliente y de proyecto. Después de la reunión, pásale las notas y pide un acta con decisiones, pendientes y responsables. Es el uso con menos riesgo y el que antes se nota."], "box": null}, {"h": "2. Generar referencias para el concepto", "p": ["Con una descripción precisa del lugar, el programa y los materiales, las herramientas de imagen producen variantes para discutir. Funciona mejor con indicaciones concretas, como «una planta, cubierta plana, porche a sur, lamas verticales de madera», que con adjetivos."], "box": null}, {"h": "3. Localizar información en documentos largos", "p": ["Carga las ordenanzas, el pliego o la memoria y pregunta por apartados concretos: dónde se regulan los retranqueos, qué dice sobre plazas de aparcamiento. Pide siempre la página o el artículo, y léelo en el original."], "box": null}, {"h": "4. Redactar y adaptar textos", "p": ["Memorias, descripciones comerciales, correos a proveedores o publicaciones para redes. Dale un texto tuyo como referencia de tono. Revisa cifras, nombres y superficies una por una, porque es donde aparecen los errores."], "box": null}, {"h": "5. Automatizar un flujo completo", "p": ["El paso siguiente es conectar herramientas: un formulario web que crea una ficha de cliente, un correo entrante que se clasifica y genera una tarea, un informe semanal que se arma con los datos de obra. Requiere definir bien el proceso antes de automatizarlo, porque un proceso confuso automatizado sigue siendo confuso."], "box": null}, {"h": "Medir si realmente ayuda", "p": ["Elige una tarea, mide cuánto tarda hoy y cuántos errores tiene. Pruébala con IA durante dos semanas, sumando el tiempo de revisión. Si el ahorro neto no llega al 30 %, probablemente no compensa el cambio de hábito."], "box": {"t": "Ficha de prueba", "l": ["Tarea y frecuencia semanal", "Minutos por vez, sin IA", "Minutos por vez con IA, revisión incluida", "Errores detectados en la revisión", "Decisión: adoptar, ajustar o descartar"]}}], "check": ["Una sola tarea para empezar", "Tiempo actual medido antes de la prueba", "Texto propio como referencia de tono", "Página o artículo exigido en cada respuesta sobre documentos", "Revisión humana de cifras y nombres", "Evaluación a las dos semanas"], "q": "¿Qué tarea probarías primero?", "cta": "Elige una y ensáyala en tu próximo proyecto.", "src": [], "min": 3, "ref": "Incorporar la IA a un estudio o a una promotora no empieza con una gran transformación, sino con una tarea pequeña bien medida. Hay más valor en un acta de reunión que se redacta sola que en muchas promesas. La tecnología útil es la que desaparece dentro del proceso y deja más tiempo para lo que de verdad necesita a una persona: escuchar, decidir y diseñar."}, {"slug": "mas-vivienda-mejor-ciudad", "cat": "Urbanismo & Vivienda", "cover": "839-25", "title": "Más vivienda, ¿mejor ciudad?", "lead": "Construir más vivienda es necesario allí donde falta. Que eso produzca una ciudad mejor depende de dónde se construye, con qué servicios y para quién. Cinco preguntas para evaluar un crecimiento urbano.", "secs": [{"h": "La cantidad cuenta", "p": ["Cuando la oferta no acompaña a la formación de hogares, los precios suben y la gente se desplaza a municipios cada vez más lejanos. Sin vivienda suficiente no hay política de acceso que funcione. Pero la cifra de viviendas, por sí sola, no describe el resultado."], "box": null}, {"h": "La ubicación cambia la vida", "p": ["Mil viviendas junto a una parada de transporte, colegios y comercio generan una vida cotidiana a pie. Las mismas mil en un sector aislado generan dos coches por hogar y horas de desplazamiento. El coste de esa diferencia lo pagan las familias cada mes y el municipio durante décadas, en infraestructuras y servicios."], "box": null}, {"h": "Movilidad y conexiones", "p": ["Un barrio nuevo funciona si sus calles continúan las de los barrios vecinos. Las urbanizaciones con un solo acceso concentran el tráfico y aíslan. Conviene mirar cuántas conexiones peatonales y rodadas tiene un sector con su entorno, y a qué distancia queda la parada de transporte público más cercana."], "box": {"t": "Indicadores sencillos para leer un barrio", "l": ["Minutos a pie hasta colegio, centro de salud y compra diaria", "Distancia a una parada con frecuencia inferior a 15 minutos", "Número de conexiones con los barrios colindantes", "Proporción de plantas bajas con actividad", "Metros de calle con sombra en verano"]}}, {"h": "Servicios y espacio público", "p": ["Las dotaciones tienen que llegar a la vez que las viviendas. Un parque previsto en el plan y ejecutado diez años después no ha servido a los primeros vecinos. El espacio público útil está cerca, tiene sombra y bancos, y queda bordeado por fachadas con actividad."], "box": null}, {"h": "Diversidad y acceso", "p": ["Un barrio con un solo tipo y precio de vivienda envejece a la vez y pierde comercio. Mezclar tamaños, regímenes de tenencia y vivienda protegida mantiene la población variada. Las plantas bajas con usos distintos de la vivienda, como locales, oficinas y equipamientos, sostienen la actividad en la calle durante todo el día."], "box": null}, {"h": "Mirar el conjunto", "p": ["La densidad media, bien diseñada, es la que hace viables el transporte, el comercio y los servicios. Un edificio de cuatro o cinco plantas con bajo comercial y terrazas ajardinadas, como el de la imagen, aporta más ciudad por hectárea que la misma edificabilidad repartida en viviendas aisladas."], "box": null}], "check": ["Servicios básicos a quince minutos a pie", "Transporte público con frecuencia real", "Calles conectadas con los barrios vecinos", "Dotaciones ejecutadas a la vez que las viviendas", "Mezcla de tamaños y regímenes", "Plantas bajas con actividad", "Sombra y arbolado en los recorridos"], "q": "¿Qué hace habitable a tu barrio?", "cta": "Piensa en el servicio o el espacio que más valoras cerca de casa.", "src": [], "min": 3, "ref": "Construir más es necesario, pero no suficiente. Una vivienda asequible lejos de todo puede salir cara a quien la habita, en tiempo, en coche y en aislamiento. La pregunta que debería acompañar a cada desarrollo es qué vida cotidiana hace posible. Si la respuesta es caminar, encontrarse y llegar a pie a lo básico, estamos haciendo ciudad y no solo casas."}, {"slug": "como-crece-malaga", "cat": "Málaga & Territorio", "cover": "839-18", "title": "¿Cómo queremos que crezca Málaga?", "lead": "Málaga es una ciudad encajada entre los montes y el mar, con una demanda de vivienda muy superior a la oferta y poco suelo fácil. Cómo se resuelva esa tensión va a definir la ciudad de las próximas décadas.", "secs": [{"h": "El punto de partida", "p": ["La ciudad atrae población, empresas y visitantes, y el precio de la vivienda ha subido mucho más rápido que los salarios locales. El planeamiento general vigente es de 2011, anterior a la ley andaluza actual, que simplificó las clases de suelo a urbano y rústico y cambió los instrumentos de ordenación.", "El suelo llano está en su mayor parte ocupado. Lo que queda está en el valle del Guadalhorce, en las laderas y dentro de la ciudad existente."], "box": null}, {"h": "Empezar por la vida cotidiana", "p": ["La pregunta útil para cualquier nuevo desarrollo es qué puede hacer un vecino a pie: llevar a los niños al colegio, comprar, ir al médico, llegar a una parada. Un crecimiento que responde bien a eso reduce coste de vida y tráfico. Uno que no responde añade coches a accesos que ya están saturados."], "box": null}, {"h": "Vivienda para distintos hogares", "p": ["La demanda no es uniforme. Jóvenes que no pueden emanciparse, familias, trabajadores que llegan por empleo cualificado y mayores que quieren reducir tamaño necesitan productos distintos. Vivienda protegida, alquiler asequible y tipologías de uno y dos dormitorios faltan más que las viviendas grandes de precio alto."], "box": null}, {"h": "Crecer hacia dentro", "p": ["Antes de ocupar suelo nuevo hay margen en la ciudad existente: solares vacíos, suelos industriales obsoletos, edificios por rehabilitar, barrios de los años sesenta y setenta que admiten mejora y, en algunos casos, más densidad. Es más lento y complejo de gestionar que urbanizar suelo libre, pero aprovecha infraestructuras y transporte que ya están pagados."], "box": null}, {"h": "Conectar los barrios y dar sombra", "p": ["La extensión del metro, los carriles bus y una red peatonal continua determinan qué zonas pueden crecer sin colapsar. En el espacio público, la sombra es infraestructura climática: arbolado de porte, calles con sección adecuada y plazas con suelo permeable. Con veranos cada vez más largos, es una condición de uso."], "box": null}, {"h": "Identidad, paisaje y datos", "p": ["Los montes, los arroyos, la vega y el frente litoral son la estructura del territorio y conviene tratarlos como límite y como recurso. Las decisiones deberían apoyarse en datos públicos, como precios, licencias, movilidad y temperatura urbana, y en la experiencia de quienes viven en cada barrio."], "box": null}], "check": ["Qué se puede hacer a pie desde el nuevo barrio", "A quién va dirigida la vivienda prevista", "Cuánto suelo interior queda por aprovechar", "Capacidad del transporte que lo sirve", "Sombra y arbolado en el proyecto de urbanización", "Relación con montes, arroyos y litoral"], "q": "¿Qué mejorarías de tu barrio?", "cta": "La experiencia cotidiana de los vecinos es un dato que el planeamiento necesita.", "src": [["Ley 7/2021 (LISTA): clases de suelo, Osborne Clarke", "https://www.osborneclarke.com/es/insights/publicada-la-ley-72021-de-impulso-para-la-sostenibilidad-del-territorio-de-andalucia"], ["Gerencia Municipal de Urbanismo de Málaga", "https://urbanismo.malaga.eu"]], "min": 3, "ref": "Málaga tiene la oportunidad de crecer sin repetir los errores de otras ciudades del litoral. El atractivo que hoy la tensiona puede ser su motor si se orienta hacia la ciudad existente, el transporte y la vivienda para quienes la sostienen cada día. Me interesa una ciudad que no expulse a sus vecinos para recibir a otros, sino que encuentre sitio para todos."}, {"slug": "de-la-idea-al-proyecto", "cat": "Proceso arquitectónico", "cover": "839-28", "title": "De la idea al proyecto: las fases y qué se decide en cada una", "lead": "Un proyecto de vivienda avanza por fases. En cada una se toman decisiones que después cuesta deshacer. Conocer el orden ayuda a saber qué preguntar, qué documentos esperar y cuándo todavía se puede cambiar de opinión.", "secs": [{"h": "1. Entender el encargo", "p": ["Se define el programa de necesidades, el presupuesto objetivo y el plazo. El resultado es un documento breve que ambas partes firman. Sin presupuesto escrito desde el principio, el proyecto tiende a crecer hasta que la primera oferta de obra lo corrige."], "box": null}, {"h": "2. Estudiar el lugar", "p": ["Se reúne la información urbanística, el levantamiento topográfico y el estudio geotécnico, y se analizan orientación, vistas, accesos y vecinos. De aquí sale el área de movimiento y la edificabilidad disponible, que son los límites reales del proyecto."], "box": null}, {"h": "3. Construir el concepto", "p": ["Con programa y lugar se prueban dos o tres implantaciones distintas. Esta es la fase más barata para cambiar: mover la casa en la parcela, pasar de una planta a dos o girar la estancia principal cuesta una tarde de trabajo. El resultado es un anteproyecto con plantas, volumen y una estimación de coste por superficie."], "box": null}, {"h": "4. Desarrollar los planos", "p": ["El proyecto básico fija distribución, superficies, alzados y cumplimiento urbanístico, y es el documento con el que se solicita la licencia. El proyecto de ejecución añade estructura, instalaciones, detalles constructivos, mediciones y presupuesto, y es el que permite construir y pedir ofertas comparables."], "box": {"t": "Qué documento esperar en cada fase", "l": ["Encargo: programa de necesidades y presupuesto objetivo", "Lugar: informe urbanístico, topográfico y geotécnico", "Concepto: anteproyecto con dos o tres opciones", "Básico: planos para licencia", "Ejecución: detalles, mediciones y presupuesto", "Obra: actas de visita y certificaciones"]}}, {"h": "5. Modelar y visualizar", "p": ["El modelo tridimensional acompaña todo el proceso. Sirve para comprobar encuentros, sombras y proporciones, y para que el cliente entienda lo que va a recibir. Las imágenes deben salir del mismo modelo que los planos."], "box": null}, {"h": "6. Revisar, iterar y construir", "p": ["Cada fase termina con una revisión y una aprobación expresa. Cambiar un tabique en anteproyecto no cuesta nada. En ejecución obliga a rehacer planos. En obra cuesta dinero y plazo. Durante la construcción, la dirección facultativa comprueba que lo ejecutado coincide con lo proyectado.", "En España, el proyecto y la dirección de obra de una vivienda corresponden a un arquitecto, con un arquitecto técnico en la dirección de ejecución. Conviene saber desde el principio quién firma cada documento."], "box": null}], "check": ["Programa y presupuesto firmados antes de dibujar", "Topográfico y geotécnico encargados pronto", "Al menos dos opciones de implantación comparadas", "Aprobación expresa al cierre de cada fase", "Mediciones completas antes de pedir ofertas", "Tres ofertas de obra sobre el mismo documento", "Técnicos firmantes identificados desde el inicio"], "q": "¿En qué fase está tu proyecto?", "cta": "Saberlo indica qué decisiones siguen abiertas y cuáles ya tienen coste.", "src": [], "min": 3, "ref": "Un proyecto es una sucesión de decisiones que se van volviendo caras. Entender ese ritmo cambia la relación entre cliente y arquitecto: el tiempo dedicado al principio no es un retraso, es un ahorro. Cuanto más se piensa en las fases baratas, menos se improvisa en las caras. La mejor obra es la que llega a la parcela con casi todas las preguntas ya respondidas."}];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const shots=[];
+const shotBtn=(id,c,alt,group,eager)=>{const k=shots.push({src:`img/${id}.jpg`,cap:`${group} / ${alt}`})-1;
+  return `<button type="button" class="shot ${c}" data-k="${k}" aria-label="Ampliar: ${esc(alt)}"><img src="img/${id}.jpg" alt="${esc(group)}: ${esc(alt)}" loading="${eager?"eager":"lazy"}"></button>`};
+
+$("projects").innerHTML=PROJECTS.map((p,i)=>`
+ <article class="proj">
+  <div class="proj-meta${p.wide?" wide":""}">
+   <span class="n">${pad(i+2)}</span>
+   <h3>${esc(p.t)}</h3>
+   <div class="d"><p>${esc(p.d)}</p><div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div></div>
+   <span class="label y">${esc(p.y)}</span>
+  </div>
+  ${p.gal?`<div class="gal fit" id="gal-${i}"></div>`:`<div class="shots">${p.s.map(([id,c,alt])=>shotBtn(id,c,alt,p.t,false)).join("")}</div>`}
+  ${p.more?`<div class="case-intro"><p class="big">${esc(p.lead)}</p><div class="case-more-btn"><button type="button" class="btn more-btn" aria-expanded="false" aria-controls="more-${i}"><span>Leer más</span><span aria-hidden="true">↓</span></button></div></div>
+  <div class="more" id="more-${i}" hidden>${MORE[p.more]}</div>`:""}
+ </article>`).join("");
+document.querySelectorAll(".more-btn").forEach(b=>b.onclick=()=>{const m=$(b.getAttribute("aria-controls")),open=m.hidden;m.hidden=!open;b.setAttribute("aria-expanded",open);b.firstElementChild.textContent=open?"Leer menos":"Leer más";b.lastElementChild.textContent=open?"↑":"↓";if(!open)b.closest(".proj").scrollIntoView({behavior:"smooth"})});
+/* planta: cambiar entre vista 3D y plano acotado */
+document.querySelectorAll(".plan").forEach(pl=>{
+ const tabs=[...pl.querySelectorAll(".plan-tabs button")],imgs=[...pl.querySelectorAll(".plan-stage img")];
+ const ks=imgs.map(im=>shots.push({src:im.getAttribute("src"),cap:"Viviendas adosadas / "+im.dataset.cap})-1);
+ let cur=0;
+ tabs.forEach((t,j)=>t.onclick=()=>{cur=j;tabs.forEach((x,k)=>x.setAttribute("aria-selected",k===j));imgs.forEach((x,k)=>x.classList.toggle("on",k===j))});
+ pl.querySelector(".plan-stage").onclick=()=>{show(ks[cur]);lb.showModal()};
+});
+const CASE="Vivienda modular";
+$("caseBtn").onclick=()=>{const m=$("caseMore"),open=m.hidden;m.hidden=!open;const b=$("caseBtn");b.setAttribute("aria-expanded",open);b.firstElementChild.textContent=open?"Leer menos":"Leer más";b.lastElementChild.textContent=open?"↑":"↓";if(!open)b.closest(".case").scrollIntoView({behavior:"smooth"})};
+$("caseTop").innerHTML=shotBtn("modular-main","full","Fachada con marco claro y porche",CASE,true);
+/* galerías: imagen grande que cambia sola + miniaturas */
+function makeGal(el,list,group){
+ const fit=el.classList.contains("fit"),notes=list.some(x=>x[2]);
+ if(notes)el.classList.add("has-note");
+ const ks=list.map(([id,alt])=>shots.push({src:`img/${id}.jpg`,cap:`${group} / ${alt}`})-1);
+ el.innerHTML=`<div class="gal-stage"><button type="button" class="gal-main" aria-label="Ampliar imagen">${list.map(([id,alt],i)=>`<span class="gal-slide${i?"":" on"}">${fit?`<img class="gal-bg" src="img/${id}.jpg" alt="" loading="lazy">`:""}<img src="img/${id}.jpg" alt="${esc(group)}: ${esc(alt)}" loading="lazy"></span>`).join("")}<span class="gal-cap label">${esc(list[0][1])}</span></button>${notes?`<p class="gal-note" aria-live="polite">${esc(list[0][2]||"")}</p>`:""}</div>
+  <div class="gal-thumbs">${list.map(([id,alt],i)=>`<button type="button" data-i="${i}" aria-label="Ver: ${esc(alt)}"${i?"":' class="on"'}><img src="img/${id}.jpg" alt="" loading="lazy"></button>`).join("")}</div>`;
+ const main=el.querySelector(".gal-main"),sl=[...main.querySelectorAll(".gal-slide")],th=[...el.querySelectorAll(".gal-thumbs button")],row=el.querySelector(".gal-thumbs");
+ let cur=0;
+ const go=i=>{cur=(i+list.length)%list.length;
+  sl.forEach((s,j)=>s.classList.toggle("on",j===cur));
+  th.forEach(b=>b.classList.remove("on"));void th[cur].offsetWidth;th[cur].classList.add("on");
+  const t=th[cur];if(row.scrollWidth>row.clientWidth)row.scrollTo({left:t.offsetLeft-(row.clientWidth-t.offsetWidth)/2,behavior:"smooth"});
+  main.querySelector(".gal-cap").textContent=list[cur][1];
+  const n=el.querySelector(".gal-note");if(n){n.textContent=list[cur][2]||"";n.classList.remove("in");void n.offsetWidth;n.classList.add("in")}};
+ th.forEach(b=>{b.onclick=()=>go(+b.dataset.i);b.addEventListener("animationend",()=>{if(b.classList.contains("on"))go(cur+1)})});
+ main.onclick=()=>{show(ks[cur]);lb.showModal()};
+}
+makeGal($("caseGal"),[["modular-1","Fachada de lamas de madera y marco oscuro"],["modular-2","Lamas de madera con porche en esquina"],["modular-3","Fachada clara con acceso enmarcado"],["modular-4","Fachada oscura con cochera cubierta"]],CASE);
+PROJECTS.forEach((p,i)=>{if(p.gal)makeGal($("gal-"+i),p.s,p.t)});
+$("aloha").innerHTML=ALOHA.map(([id,c,alt])=>shotBtn(id,c,alt,"Grupo Aloha")).join("");
+
+const f=ARTS[0];
+$("feat").innerHTML=`<a class="feat" href="#leer-${f.slug}">
+  <span class="ft"><span class="meta"><span class="n">01</span><span class="label">${esc(f.cat)}</span><span class="label">${f.min} min de lectura</span></span><h3>${esc(f.title)}</h3></span>
+  <span class="tx"><p>${esc(f.lead)}</p><span class="go">Leer artículo ↗</span></span></a>`;
+$("cards").innerHTML=ARTS.slice(1).map((a,k)=>`<a class="card" href="#leer-${a.slug}">
+  <span class="meta"><span class="n">${pad(k+2)}</span><span class="label">${esc(a.cat)}</span></span>
+  <h3>${esc(a.title)}</h3><p>${esc(a.lead)}</p><span class="meta"><span class="go">Leer ↗</span><span class="label">${a.min} min</span></span></a>`).join("");
+
+/* lightbox */
+const lb=$("lb");let cur=0;
+function show(k){cur=(k+shots.length)%shots.length;$("lbImg").src=shots[cur].src;$("lbImg").alt=shots[cur].cap;$("lbCap").textContent=shots[cur].cap}
+document.addEventListener("click",e=>{const b=e.target.closest(".shot");if(b){show(+b.dataset.k);lb.showModal()}});
+$("lbPrev").onclick=()=>show(cur-1);$("lbNext").onclick=()=>show(cur+1);$("lbClose").onclick=()=>lb.close();
+lb.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")show(cur-1);if(e.key==="ArrowRight")show(cur+1)});
+lb.addEventListener("click",e=>{if(e.target===lb||e.target.tagName==="FIGURE")lb.close()});
+
+/* esquemas de los artículos */
+const FIGS={
+"comprar-terreno":{after:1,cap:"Edificabilidad y ocupación sobre el ejemplo del artículo. Con 150 m² de techo y una huella máxima de 125 m², la casa solo cabe en dos plantas. Valores ilustrativos.",html:`<svg viewBox="0 0 480 290" role="img" aria-label="Parcela de 500 metros cuadrados con área de movimiento y huella de 125 metros cuadrados; comparación entre dos plantas de 75 y una planta de 150">
+ <text class="t" x="20" y="26">PARCELA 500 m²</text>
+ <rect class="ln" x="20" y="40" width="200" height="200"/>
+ <rect class="ln lm dash" x="44" y="64" width="152" height="152"/>
+ <rect class="fa ln la" x="70" y="90" width="100" height="100"/>
+ <text class="t ta" x="120" y="136" text-anchor="middle">HUELLA</text><text class="t tk" x="120" y="154" text-anchor="middle">125 m²</text>
+ <text class="t" x="20" y="264">– – área de movimiento</text><text class="t" x="20" y="282">(parcela menos retranqueos)</text>
+ <text class="t" x="250" y="26">150 m² DE TECHO</text>
+ <rect class="ln fs" x="250" y="62" width="110" height="34"/><rect class="ln fs" x="250" y="98" width="110" height="34"/>
+ <line class="ln" x1="240" y1="132" x2="470" y2="132"/>
+ <text class="t tk" x="372" y="90">2 × 75 m²</text><text class="t ta" x="372" y="110">cabe ✓</text>
+ <rect class="ln fs" x="250" y="196" width="183" height="34"/><rect class="ln la fa" x="433" y="196" width="37" height="34"/>
+ <line class="ln" x1="240" y1="230" x2="470" y2="230"/>
+ <line class="ln la dash" x1="433" y1="180" x2="433" y2="244"/>
+ <text class="t" x="429" y="176" text-anchor="end">ocupación máx. 125 m²</text>
+ <text class="t tk" x="250" y="258">1 × 150 m²</text><text class="t ta" x="250" y="278">supera la ocupación ✕</text>
+</svg>`},
+"disenar-para-el-calor":{after:1,cap:"Fachada sur en Málaga. Un vuelo de 50 cm deja en sombra un hueco de 2,20 m con el sol alto de junio y deja pasar el sol bajo de diciembre hasta el fondo de la estancia.",html:`<svg viewBox="0 0 480 300" role="img" aria-label="Sección de una fachada con vuelo: el sol de verano a 77 grados queda bloqueado y el de invierno a 30 grados entra hasta el fondo">
+ <line class="ln" x1="10" y1="260" x2="470" y2="260"/>
+ <rect class="tkf" x="270" y="70" width="10" height="69"/>
+ <rect class="tkf" x="242" y="133" width="38" height="6"/>
+ <line class="ln" x1="280" y1="70" x2="470" y2="70"/>
+ <line class="ln la" x1="275" y1="139" x2="275" y2="260" stroke-width="2"/>
+ <line class="ln la" x1="214" y1="10" x2="270" y2="252"/>
+ <text class="t ta" x="206" y="30" text-anchor="end">VERANO · 77°</text>
+ <line class="ln lm dash" x1="46" y1="20" x2="462" y2="260"/>
+ <text class="t tk" x="58" y="56">INVIERNO · 30°</text>
+ <line class="ln la" x1="280" y1="257" x2="462" y2="257" stroke-width="6" stroke-opacity=".6"/>
+ <line class="ln lm" x1="150" y1="178" x2="240" y2="138"/><text class="t" x="146" y="190" text-anchor="end">vuelo 0,50 m</text>
+ <text class="t" x="290" y="222">hueco 2,20 m</text>
+ <text class="t" x="371" y="282" text-anchor="middle">sol de invierno en el suelo</text>
+ <text class="t" x="20" y="282">EXTERIOR</text><text class="t" x="292" y="92">INTERIOR</text>
+</svg>`},
+"casa-antes-del-plano":{after:2,cap:"Gradiente de intimidad. Ordenar las estancias desde la calle hasta el dormitorio ayuda a decidir dónde van las puertas, los recorridos y el contacto visual entre zonas.",html:`<div class="grad">
+ <div class="grad-zones"><span style="grid-column:1/6">Zona de día</span><span style="grid-column:6/8">Zona de noche</span></div>
+ <div class="grad-bar"></div>
+ <ol><li style="--c:#E8E7E2">Calle</li><li style="--c:#d0cfca">Acceso</li><li style="--c:#b8b7b2">Cocina</li><li style="--c:#a09f9a">Salón comedor</li><li style="--c:#85847f">Exterior privado</li><li style="--c:#4d4c49">Baño</li><li style="--c:#111">Dormitorios</li></ol>
+ <div class="grad-ends"><span>Público · encuentro</span><span>Íntimo · descanso</span></div>
+</div>`},
+"valor-mas-alla-de-los-m2":{after:0,cap:"Dos viviendas de 90 m² con el mismo precio por metro. La diferencia está en los metros que no se habitan. Valores ilustrativos.",html:`<div class="bars">
+ <div class="bar-row"><span class="label">Vivienda A · 90 m²</span><div class="bar"><span style="flex:74" class="b1">Estancias 74</span><span style="flex:8" class="b2">8</span><span style="flex:8" class="b3">8</span></div><span class="bar-k">pasillos 9 %</span></div>
+ <div class="bar-row"><span class="label">Vivienda B · 90 m²</span><div class="bar"><span style="flex:63" class="b1">Estancias 63</span><span style="flex:10" class="b2">10</span><span style="flex:17" class="b3">17</span></div><span class="bar-k">pasillos 19 %</span></div>
+ <div class="bar-leg"><span><i class="b1"></i>Estancias</span><span><i class="b2"></i>Baños y almacenaje</span><span><i class="b3"></i>Pasillos y distribuidores</span></div>
+</div>`},
+"render-que-explica":{after:0,cap:"La misma estancia de 4 × 5 m vista en planta. Una focal de 24 a 35 mm se parece a lo que ve el ojo. Con 14 mm la cámara abarca casi el doble de ángulo y el espacio parece mucho mayor de lo que es.",html:`<svg viewBox="0 0 480 350" role="img" aria-label="Planta de una habitación con dos campos de visión de cámara: 24 milímetros y 14 milímetros">
+ <defs><clipPath id="room"><rect x="128" y="30" width="224" height="280"/></clipPath></defs>
+ <polygon class="fa" clip-path="url(#room)" points="240,296 78,80 402,80"/>
+ <rect class="ln" x="128" y="30" width="224" height="280"/>
+ <line class="ln la" x1="240" y1="296" x2="153" y2="180"/><line class="ln la" x1="240" y1="296" x2="327" y2="180"/>
+ <line class="ln lm dash" x1="240" y1="296" x2="27" y2="130"/><line class="ln lm dash" x1="240" y1="296" x2="453" y2="130"/>
+ <circle cx="240" cy="296" r="5" class="dot"/>
+ <text class="t ta" x="240" y="112" text-anchor="middle">24–35 mm</text>
+ <text class="t" x="20" y="118">14 mm</text><text class="t" x="460" y="118" text-anchor="end">14 mm</text>
+ <text class="t" x="240" y="334" text-anchor="middle">cámara a 1,60 m de altura</text>
+ <text class="t tk" x="140" y="48">ESTANCIA 4 × 5 m</text>
+</svg>`},
+"ia-y-criterio":{after:4,cap:"Cómo decidir si una tarea se delega: cruzar el riesgo de un error con lo fácil que resulta comprobar el resultado.",html:`<div class="mx">
+ <span class="mx-y">Riesgo si hay un error</span>
+ <span class="mx-yl">Bajo</span><div class="mx-c">Delegar y revisar por muestreo</div><div class="mx-c">Delegar solo si el error no importa</div>
+ <span class="mx-yl">Alto</span><div class="mx-c">Delegar y revisar siempre</div><div class="mx-c mx-no">No delegar</div>
+ <span></span><span class="mx-xl">Fácil de verificar</span><span class="mx-xl">Difícil de verificar</span>
+</div>`},
+"cinco-usos-de-ia":{after:4,cap:"Los cinco usos ordenados de menor a mayor dificultad. Cada escalón pide un proceso más definido, y también ahorra más tiempo.",html:`<div class="steps">
+ <div style="--h:22%"><span class="n">1</span><b>Reuniones y encargos</b></div>
+ <div style="--h:38%"><span class="n">2</span><b>Referencias de concepto</b></div>
+ <div style="--h:54%"><span class="n">3</span><b>Documentos largos</b></div>
+ <div style="--h:70%"><span class="n">4</span><b>Textos y comunicación</b></div>
+ <div style="--h:90%"><span class="n">5</span><b>Flujos automatizados</b></div>
+</div><div class="steps-ax"><span>menos dificultad</span><span>más dificultad e impacto →</span></div>`},
+"mas-vivienda-mejor-ciudad":{after:1,cap:"La vida cotidiana a pie. Un barrio bien situado reúne lo básico en un radio de quince minutos andando.",html:`<svg viewBox="0 0 480 330" role="img" aria-label="Círculos concéntricos de 5, 10 y 15 minutos a pie alrededor de una vivienda con servicios cotidianos">
+ <circle class="ln lm dash" cx="240" cy="165" r="140"/><circle class="ln lm dash" cx="240" cy="165" r="95"/><circle class="ln" cx="240" cy="165" r="50"/>
+ <text class="t" x="240" y="20" text-anchor="middle">15 MIN</text><text class="t" x="240" y="64" text-anchor="middle">10 MIN</text><text class="t" x="240" y="109" text-anchor="middle">5 MIN</text>
+ <circle cx="240" cy="165" r="7" class="dot"/><text class="t tk" x="240" y="190" text-anchor="middle">VIVIENDA</text>
+ <circle cx="265" cy="208" r="4" class="dot2"/><text class="t" x="273" y="212">parada</text>
+ <circle cx="197" cy="140" r="4" class="dot2"/><text class="t" x="189" y="136" text-anchor="end">compra diaria</text>
+ <circle cx="329" cy="133" r="4" class="dot2"/><text class="t" x="337" y="137">colegio</text>
+ <circle cx="151" cy="197" r="4" class="dot2"/><text class="t" x="143" y="201" text-anchor="end">centro de salud</text>
+ <circle cx="310" cy="44" r="4" class="dot2"/><text class="t" x="318" y="48">parque</text>
+ <circle cx="375" cy="201" r="4" class="dot2"/><text class="t" x="383" y="205">mercado</text>
+ <circle cx="192" cy="297" r="4" class="dot2"/><text class="t" x="200" y="301">instituto</text>
+</svg>`},
+"como-crece-malaga":{after:3,cap:"Dos formas de crecer. Urbanizar suelo lejano obliga a llevar carreteras y servicios; completar la ciudad existente aprovecha infraestructuras y transporte que ya están pagados.",html:`<svg viewBox="0 0 480 250" role="img" aria-label="Comparación entre crecer hacia fuera con urbanizaciones dispersas y crecer hacia dentro junto al transporte">
+ <text class="t tk" x="120" y="18" text-anchor="middle">HACIA FUERA</text>
+ <line class="ln lm dash" x1="78" y1="160" x2="38" y2="208"/><line class="ln lm dash" x1="168" y1="70" x2="212" y2="36"/><line class="ln lm dash" x1="172" y1="146" x2="214" y2="196"/>
+ <circle class="ln fs" cx="120" cy="115" r="60"/>
+ <circle class="ln la fa" cx="34" cy="214" r="13"/><circle class="ln la fa" cx="218" cy="32" r="13"/><circle class="ln la fa" cx="220" cy="202" r="13"/>
+ <text class="t" x="120" y="242" text-anchor="middle">suelo nuevo y más coche</text>
+ <line class="ln" x1="240" y1="20" x2="240" y2="240" stroke-opacity=".25"/>
+ <text class="t tk" x="360" y="18" text-anchor="middle">HACIA DENTRO</text>
+ <circle class="ln fs" cx="360" cy="115" r="60"/>
+ <line class="ln la" x1="292" y1="160" x2="432" y2="70" stroke-width="2"/>
+ <circle cx="326" cy="138" r="4" class="dot"/><circle cx="362" cy="115" r="4" class="dot"/><circle cx="398" cy="92" r="4" class="dot"/>
+ <rect class="la fa ln" x="334" y="118" width="14" height="14"/><rect class="la fa ln" x="368" y="94" width="14" height="14"/><rect class="la fa ln" x="342" y="88" width="12" height="12"/><rect class="la fa ln" x="386" y="112" width="12" height="12"/><rect class="la fa ln" x="312" y="110" width="12" height="12"/>
+ <text class="t" x="360" y="242" text-anchor="middle">ciudad existente y transporte</text>
+</svg>`},
+"de-la-idea-al-proyecto":{after:2,cap:"A medida que avanza el proyecto, la capacidad de cambiar baja y el coste de hacerlo sube. Las primeras fases son el momento de decidir.",html:`<svg viewBox="0 0 480 280" role="img" aria-label="Curvas de capacidad de cambio y coste de cambio a lo largo de las seis fases de un proyecto">
+ <rect class="fa" x="40" y="30" width="190" height="200" fill-opacity=".08"/>
+ <text class="t ta" x="48" y="48">MOMENTO DE DECIDIR</text>
+ <line class="ln" x1="40" y1="230" x2="460" y2="230"/>
+ <path class="ln" d="M40,62 C150,66 220,190 460,214"/>
+ <path class="ln la" d="M40,214 C220,206 300,120 460,44" stroke-width="2"/>
+ <text class="t tk" x="456" y="182" text-anchor="end">capacidad de cambiar</text>
+ <text class="t ta" x="456" y="36" text-anchor="end">coste de cambiar</text>
+ <g class="t" text-anchor="middle"><text x="75" y="252">Encargo</text><text x="145" y="252">Lugar</text><text x="215" y="252">Concepto</text><text x="285" y="252">Básico</text><text x="355" y="252">Ejecución</text><text x="425" y="252">Obra</text></g>
+ <g class="ln lm"><line x1="110" y1="226" x2="110" y2="234"/><line x1="180" y1="226" x2="180" y2="234"/><line x1="250" y1="226" x2="250" y2="234"/><line x1="320" y1="226" x2="320" y2="234"/><line x1="390" y1="226" x2="390" y2="234"/></g>
+</svg>`}
+};
+const figHtml=f=>`<figure class="fig">${f.html}<figcaption>${esc(f.cap)}</figcaption></figure>`;
+
+/* encuestas: respuestas anónimas guardadas en la base de datos de la página */
+const POLLS={
+"comprar-terreno":[["¿En qué situación estás?",["Buscando parcela","Tengo una parcela","He comprado y quiero construir","Solo me interesa el tema"]],["¿Qué te preocupa más antes de comprar?",["Qué se puede construir","El coste total","Los trámites","Elegir bien la zona"]],["¿Has pedido alguna vez un informe urbanístico por escrito?",["Sí","No","No sabía que existía"]]],
+"disenar-para-el-calor":[["¿Cómo es tu vivienda en verano?",["Fresca sin aire acondicionado","Aguantable con ventilador","Necesito aire casi todo el día","Insoportable"]],["¿Tiene protección solar exterior: persianas, toldos o lamas?",["Sí, en todas las fachadas","Solo en algunas","No"]],["¿Puedes ventilar de lado a lado, con ventanas en fachadas opuestas?",["Sí","No","No lo sé"]]],
+"casa-antes-del-plano":[["¿Cuántas personas vivís en casa?",["1","2","3 o 4","5 o más"]],["¿Qué espacio echas más en falta?",["Un lugar para trabajar","Más almacenaje","Un exterior útil","Más privacidad"]],["¿Tu casa se adapta a cómo vives hoy?",["Sí, del todo","En parte","Poco o nada"]]],
+"valor-mas-alla-de-los-m2":[["Al buscar casa, ¿qué priorizas?",["Ubicación","Luz y orientación","Distribución","Superficie","Exterior"]],["¿Cuánto pesa el precio por metro cuadrado en tu decisión?",["Es lo primero que miro","Lo comparo con otras cosas","Casi no lo miro"]],["¿Tu vivienda tiene una terraza o un patio que uses de verdad?",["Sí, a diario","Sí, a veces","Tiene, pero no se usa","No tiene"]]],
+"render-que-explica":[["¿Alguna vez una imagen de proyecto te ha creado expectativas que luego no se cumplieron?",["Sí","Alguna vez","No"]],["¿Qué te ayuda más a entender un espacio?",["Un plano","Un render","Un recorrido 3D o un vídeo","Una maqueta o una visita"]],["¿Qué debería mostrar siempre un render?",["La escala real","Los materiales reales","La luz real","Todo lo anterior"]]],
+"ia-y-criterio":[["¿Usas inteligencia artificial en tu trabajo?",["A diario","A veces","La he probado","Nunca"]],["¿Qué tarea te daría más reparo delegar?",["Cálculos y cifras","Normativa","Textos para clientes","Diseño"]],["Si la IA comete un error en un proyecto, ¿quién debería responder?",["El profesional que firma","La empresa de la herramienta","Ambos","No lo tengo claro"]]],
+"cinco-usos-de-ia":[["¿A qué te dedicas?",["Arquitectura o diseño","Promoción o inmobiliaria","Construcción","Otro sector"]],["¿Qué tarea te quita más tiempo cada semana?",["Reuniones y actas","Documentación","Comunicación y textos","Tareas administrativas"]],["¿Qué uso probarías primero?",["Preparar reuniones","Referencias de concepto","Leer documentos","Redactar textos","Automatizar un flujo"]]],
+"mas-vivienda-mejor-ciudad":[["¿Cuánto tardas a pie en llegar a lo básico: compra, colegio y salud?",["Menos de 10 minutos","Entre 10 y 20 minutos","Más de 20 minutos","Necesito el coche"]],["¿Qué falta más en tu barrio?",["Transporte público","Sombra y zonas verdes","Comercio de proximidad","Equipamientos"]],["Construir más vivienda en tu zona te parece…",["Necesario","Necesario, pero con condiciones","Innecesario"]]],
+"como-crece-malaga":[["¿Cuál es tu relación con Málaga?",["Vivo en la ciudad","Vivo en la provincia","Trabajo allí","Otra"]],["¿Cómo debería crecer la ciudad?",["Hacia dentro","Con barrios nuevos bien conectados","De las dos formas","Debería frenar su crecimiento"]],["¿Te ves viviendo en Málaga dentro de diez años?",["Sí","Me gustaría, pero no sé si podré","No"]]],
+"de-la-idea-al-proyecto":[["¿Has pasado por un proyecto de vivienda?",["Sí, como cliente","Sí, como profesional","No, pero lo estoy pensando","No"]],["Si lo viviste, ¿cuándo se tomaron peor las decisiones?",["Al principio, por prisa","En los planos","Durante la obra","No aplica"]],["¿Qué valorarías más de un arquitecto?",["Claridad en el proceso","Control del presupuesto","El diseño","Cumplir los plazos"]]]
+};
+const SB={url:"https://iayhiustzvtzyhtpuutj.supabase.co",key:"sb_publishable_bOSNdKiPU3AhVI85F0naFg_O34XwH1W"};
+const PS={res:{},loading:{},err:{},sent:null};
+const ls={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function rid(){let r=ls.get("fr_rid");if(!r){r=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():"10000000-1000-4000-8000-100000000000".replace(/[018]/g,c=>(c^Math.random()*16>>c/4).toString(16));ls.set("fr_rid",r)}return r}
+async function sb(path,body){const r=await fetch(SB.url+"/rest/v1/"+path,{method:"POST",headers:{apikey:SB.key,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(body)});if(!r.ok)throw new Error("http "+r.status);const t=await r.text();return t?JSON.parse(t):null}
+function pollHtml(a){const qs=POLLS[a.slug];if(!qs)return"";
+ return `<section id="spoll" class="poll" data-slug="${a.slug}"><span class="label">Tu situación</span>
+  <h2>${esc(a.q)}</h2><p class="hint">Responde en un minuto. Es anónimo y, al enviar, verás cómo han respondido los demás.</p>
+  <form id="pollForm" novalidate>${qs.map(([q,o],k)=>`<fieldset><legend><span class="n">${pad(k+1)}</span>${esc(q)}</legend><div class="opts">${o.map((t,j)=>`<label><input type="radio" name="q${k}" value="${j}"><span>${esc(t)}</span></label>`).join("")}</div></fieldset>`).join("")}
+   <label class="ptxt"><span>¿Quieres contar algo más? <i>Opcional. Solo lo leerá el autor.</i></span><textarea name="txt" rows="3" maxlength="600"></textarea></label>
+   <div class="pact"><button class="btn" type="submit"><span>Enviar respuestas</span><span aria-hidden="true">→</span></button><span class="pmsg" aria-live="polite"></span></div>
+  </form><div class="pres" id="pollRes" aria-live="polite"></div></section>`}
+function pollMine(slug){const m=ls.get("fr_poll_"+slug);return Array.isArray(m)?m:null}
+async function pollLoad(slug){if(PS.loading[slug])return;PS.loading[slug]=true;PS.err[slug]=false;
+ try{PS.res[slug]=await sb("rpc/encuesta_resultados",{p_slug:slug})}catch(e){PS.err[slug]=true}
+ PS.loading[slug]=false;pollPaint(false)}
+function pollPaint(fresh){const sec=$("spoll");if(!sec||$("article").hidden)return;
+ const slug=sec.dataset.slug,qs=POLLS[slug],form=$("pollForm"),msg=sec.querySelector(".pmsg"),res=$("pollRes"),btn=form.querySelector("button");
+ const mine=pollMine(slug);
+ if(fresh){form.dataset.dirty="";PS.sent=null;if(mine)pollLoad(slug)}
+ if(mine&&!form.dataset.dirty)mine.forEach((v,k)=>{const r=form.querySelector(`input[name=q${k}][value="${v}"]`);if(r)r.checked=true});
+ btn.firstElementChild.textContent=mine?"Actualizar respuestas":"Enviar respuestas";
+ if(!form.dataset.sending){
+  if(mine&&!form.dataset.dirty)msg.textContent=PS.sent===slug?"¡Gracias! Tus respuestas se han guardado. Así han respondido los demás:":"Ya has respondido. Puedes cambiar tus respuestas y volver a enviar.";
+  else if(!form.dataset.msg)msg.textContent="";
+ }
+ const d=PS.res[slug];
+ if(!mine){res.innerHTML="";return}
+ if(PS.err[slug]&&!d){res.innerHTML=`<p class="pmsg">No se han podido cargar los resultados ahora mismo.</p>`;return}
+ if(!d){res.innerHTML=`<p class="pmsg">Cargando resultados…</p>`;return}
+ const n=d.n||0;
+ res.innerHTML=`<div class="pres-h"><span class="label">Así han respondido</span><span class="label">${n} ${n===1?"respuesta":"respuestas"}</span></div>`+qs.map(([q,o],k)=>{
+  const c=o.map((_,j)=>(d.counts[k]||[])[j]||0),tot=c.reduce((x,y)=>x+y,0)||1;
+  return `<div class="pres-q"><p>${esc(q)}</p>${o.map((t,j)=>{const pc=Math.round(c[j]/tot*100),me=mine[k]===j;
+   return `<div class="pres-o${me?" me":""}"><span class="pres-t">${esc(t)}${me?" · tu respuesta":""}</span><span class="pres-b"><i style="width:${pc}%"></i></span><span class="pres-p">${pc} %</span></div>`}).join("")}</div>`}).join("");
+}
+document.addEventListener("change",e=>{if(e.target.closest("#pollForm")){const f=$("pollForm");f.dataset.dirty="1";f.dataset.msg="";const m=document.querySelector("#spoll .pmsg");if(m&&!f.dataset.sending)m.textContent=""}});
+document.addEventListener("submit",async e=>{const form=e.target.closest("#pollForm");if(!form)return;e.preventDefault();
+ const sec=$("spoll"),slug=sec.dataset.slug,qs=POLLS[slug],msg=sec.querySelector(".pmsg"),btn=form.querySelector("button");
+ const a=qs.map((_,k)=>{const r=form.querySelector(`input[name=q${k}]:checked`);return r?+r.value:null});
+ if(a.some(v=>v===null)){form.dataset.msg="1";msg.textContent="Responde las tres preguntas antes de enviar.";return}
+ const txt=form.elements.txt.value.trim(),who=rid();
+ form.dataset.sending="1";btn.disabled=true;msg.textContent="Enviando…";
+ try{
+  await sb("encuesta_respuestas",{slug,respondent:who,answers:a});
+  if(txt){await sb("encuesta_notas",{slug,respondent:who,texto:txt.slice(0,600)});form.elements.txt.value=""}
+  ls.set("fr_poll_"+slug,a);form.dataset.dirty="";form.dataset.msg="";PS.sent=slug;form.dataset.sending="";
+  PS.loading[slug]=false;await pollLoad(slug);
+ }catch(err){form.dataset.sending="";form.dataset.msg="1";msg.textContent="No se ha podido enviar. Inténtalo de nuevo en un momento."}
+ btn.disabled=false;pollPaint(false);
+});
+
+/* artículo */
+function renderArticle(i){const a=ARTS[i],nx=ARTS[(i+1)%ARTS.length];
+ $("article").innerHTML=`
+ <div class="wrap a-head">
+  <a class="back label" href="#ideas">← Todas las ideas</a>
+  <div class="meta"><span class="label">${esc(a.cat)}</span><span class="label">${a.min} min de lectura</span><span class="label">Idea ${pad(i+1)} / ${pad(ARTS.length)}</span></div>
+  <h1>${esc(a.title)}</h1>
+  <p class="lead">${esc(a.lead)}</p>
+ </div>
+ <div class="wrap a-body">
+  <aside class="toc" aria-label="Índice del artículo"><span class="label">En este artículo</span>
+   <ol>${a.secs.map((s,j)=>`<li><button type="button" data-j="${j}"><span>${pad(j+1)}</span><span>${esc(s.h.replace(/^\d\. /,""))}</span></button></li>`).join("")}
+   <li><button type="button" data-j="ref"><span>—</span><span>Reflexión</span></button></li>
+   <li><button type="button" data-j="poll"><span>?</span><span>Tu situación</span></button></li></ol>
+  </aside>
+  <div class="prose">
+   ${a.secs.map((s,j)=>`<section id="s${j}"><h2><span class="n">${pad(j+1)}</span>${esc(s.h.replace(/^\d\. /,""))}</h2>${s.p.map(p=>`<p>${esc(p)}</p>`).join("")}
+    ${s.box?`<div class="box"><span class="label">${esc(s.box.t)}</span><ul>${s.box.l.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div>`:""}
+    ${FIGS[a.slug]&&FIGS[a.slug].after===j?figHtml(FIGS[a.slug]):""}</section>`).join("")}
+   <section id="sref" class="refl"><span class="label">Reflexión</span><p>${esc(a.ref)}</p></section>
+   ${pollHtml(a)}
+   ${a.src.length?`<div class="srcs"><span class="label">Fuentes y enlaces útiles</span>${a.src.map(([t,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join("")}</div>`:""}
+   <p class="note">Contenido orientativo. La normativa y las condiciones de cada parcela deben comprobarse con el ayuntamiento y con los profesionales competentes.</p>
+  </div>
+ </div>
+ <div class="wrap"><a class="next" href="#leer-${nx.slug}"><span class="label">Siguiente artículo</span><h3>${esc(nx.title)}</h3><span class="go">Leer ↗</span></a></div>`;
+ document.title=a.title+" / Francisco Recaite";
+ pollPaint(true);
+}
+$("article").addEventListener("click",e=>{const b=e.target.closest(".toc button");if(b){const el=$("s"+b.dataset.j);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}});
+function onScroll(){if($("article").hidden)return;const h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+ $("progress").style.width=(max>0?Math.min(100,h.scrollTop/max*100):0)+"%";
+ let on=null;document.querySelectorAll(".prose section").forEach(s=>{if(s.getBoundingClientRect().top<160)on=s.id.slice(1)});
+ document.querySelectorAll(".toc button").forEach(b=>b.classList.toggle("on",b.dataset.j===on))}
+addEventListener("scroll",onScroll,{passive:true});
+const navEl=document.querySelector(".nav");
+function navState(){navEl.classList.toggle("over",!$("home").hidden&&scrollY<$("hero").offsetHeight-70)}
+addEventListener("scroll",navState,{passive:true});addEventListener("resize",navState);
+
+function route(){const h=location.hash.slice(1);const i=h.startsWith("leer-")?ARTS.findIndex(a=>a.slug===h.slice(5)):-1;
+ const art=i>=0;$("home").hidden=art;$("article").hidden=!art;$("progress").hidden=!art;
+ if(art){renderArticle(i);scrollTo(0,0);onScroll()}
+ else{document.title="Francisco Recaite";const el=h&&document.getElementById(h);if(el)requestAnimationFrame(()=>el.scrollIntoView());}}
+addEventListener("hashchange",()=>{route();navState()});route();navState();
+</script>
+</body>
+</html>
