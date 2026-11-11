@@ -443,6 +443,18 @@ dialog::backdrop{background:rgba(17,17,17,.86)}
 .proj-meta h3,.case-title h2,.case-claim,.intro h2,.intro p,.about h2,.about .txt p:first-child,.feat h3,.next h3,.solves h3,
 .proj-meta .d p:first-child,.proj-meta .n,.proj-meta .y{text-box:trim-both cap alphabetic}
 @media (max-width:900px){.case-title h2,.case-claim{grid-column:1/13}.case-claim{grid-row:4}}
+/* visualización agrupada por proyecto: pestañas encima de la galería */
+.vtabs{display:flex;margin:0 0 18px;border-top:1px solid var(--fg);overflow-x:auto;scrollbar-width:none}
+.vtabs::-webkit-scrollbar{display:none}
+.vtabs button{flex:1 0 auto;min-width:180px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:baseline;text-align:left;padding:14px 18px 14px 0;border-top:3px solid transparent;margin-top:-2px;color:var(--muted);transition:color .2s,border-color .2s}
+.vtabs button+button{padding-left:18px;border-left:1px solid var(--border)}
+.vtabs .vt-n{font-family:var(--mono);font-size:12px}
+.vtabs .vt-t{font-family:var(--display);font-weight:700;font-size:clamp(17px,1.4vw,20px);letter-spacing:-.02em;line-height:1.15}
+.vtabs .vt-m{grid-column:2;font-size:13px;line-height:1.3}
+.vtabs button:hover{color:var(--fg)}
+.vtabs button[aria-selected="true"]{color:var(--fg);border-top-color:var(--accent)}
+.vtabs button[aria-selected="true"] .vt-n{color:var(--accent)}
+@media (max-width:640px){.vtabs button{min-width:150px}.vtabs .vt-m{display:none}}
 </style>
 </head>
 <body>
@@ -602,31 +614,37 @@ dialog::backdrop{background:rgba(17,17,17,.86)}
 
 <script>
 const PROJECTS=[
- {t:"Visualización arquitectónica / Interiores",y:"Estudio",d:"La representación arquitectónica convierte un plano en un lugar reconocible. Las imágenes fotorrealistas permiten al cliente ver los espacios antes de que existan y entender cómo se habitan: la escala de cada estancia, el recorrido de la luz y el diálogo entre materiales. Son una herramienta para decidir con seguridad y para dar a un proyecto la fuerza que necesita para comunicarse.",
-  tags:["Visualización 3D","Renderizado","Interiorismo"],gal:true,
-  s:[
-   ["int-01","Salón comedor con salida al patio","Un único espacio lineal que remata en el ventanal al patio. La luz de poniente entra filtrada por cortinas de lino y dibuja sombras sobre paredes claras. Roble y gres gris aportan calidez sin cargar el ambiente."],
-   ["int-02","Salón comedor con ventanales al jardín","Carpinterías de suelo a techo convierten el jardín en el fondo del salón. Paramentos claros, nogal en la mesa y tejidos en tonos piedra dejan que la luz rasante sea la protagonista."],
-   ["int-03","Salón abierto al jardín","Volúmenes bajos y horizontales para no competir con la corredera. El mueble suspendido libera el suelo, el yute aporta textura y la luz entra de lado, a la altura de la mirada."],
-   ["int-18","Salón con panel de lamas","El panel de lamas de madera ordena la pared de la televisión y mejora la acústica. Un lucernario aporta luz cenital y la corredera abre el salón al jardín en toda su anchura."],
-   ["int-04","Salón con pared verde y acceso desde el jardín","Una pared en verde oliva ancla la zona de estar y la separa del acceso sin necesidad de tabiques. El negro de carpinterías y puerta ordena el conjunto, y la luz del atardecer suaviza los contrastes."],
-   ["int-05","Comedor junto al patio interior","El patio funciona como pozo de luz y ventilación. Las correderas en esquina disuelven el límite entre dentro y fuera, y la lámpara lineal sobre la mesa señala el lugar de reunión."],
-   ["int-06","Cocina y comedor de noche","De noche el espacio se lee por capas de luz: tira LED bajo los muebles, colgantes sobre la barra y una línea sobre la mesa. Cada zona tiene su propia iluminación y su propio ambiente."],
-   ["int-07","Cocina con isla y encimera oscura","Frentes lisos sin tiradores y encimera de piedra oscura para un volumen sereno. La isla organiza el recorrido entre trabajo y estancia, y la ventana corrida trae la luz justo sobre el fregadero."],
-   ["int-08","Cocina abierta al comedor","La cocina se recoge bajo un falso techo que define su ámbito sin cerrarla. Madera natural, blanco y acero en una paleta mínima, con la luz de la mañana entrando de lado hasta el comedor."],
-   ["int-22","Cocina verde de uso diario","Una cocina lineal pensada para la vida cotidiana. Frentes en verde bosque, columnas de madera y la ventana integrada en el centro de la composición, con luz que llega hasta la mesa del comedor."],
-   ["int-09","Cocina verde con barra","Frentes verdes y azulejo vertical en el mismo tono crean un fondo continuo. La barra de madera hace de transición con el salón y la luz baja de la tarde resalta cada textura."],
-   ["int-10","Cocina con mesa de office","Una cocina compacta resuelta en un solo frente. La madera ordena el almacenaje y una ventana estrecha basta para llenar el rincón de office de luz y sombras vegetales."],
-   ["int-19","Comedor junto a la cocina","Madera clara en mesa, sillas y lámparas para un ambiente cálido y continuo con la cocina. Las lámparas de varillas filtran la luz y la reparten de forma difusa sobre la mesa."],
-   ["int-11","Dormitorio principal","Un espacio de descanso con pocos materiales: pared en gris cálido, textiles naturales y madera clara. La luz natural se tamiza con lino y la artificial se reduce a puntos bajos y cálidos."],
-   ["int-12","Dormitorio con vistas al valle","La ventana enmarca el paisaje como un cuadro y la cama se orienta hacia ella. Cabecero tapizado, tonos arena y la luz rasante de la tarde componen un ambiente sereno."],
-   ["int-13","Dormitorio con pared azul y salida a la terraza","El azul profundo de la pared contrasta con la madera del armario y potencia el dibujo de las sombras. La corredera a la terraza prolonga el dormitorio hacia el exterior."],
-   ["int-14","Dormitorio con cama abatible y estantería","Mobiliario integrado que libera superficie útil: la cama se pliega dentro de un mueble de almacenaje y estantería. El verde de fondo y la madera clara hacen que un espacio pequeño se perciba amplio."],
-   ["int-15","Baño con doble lavabo y revestimiento acanalado","Un baño tratado como una sola pieza en tonos arena. El revestimiento acanalado hace vibrar la luz, y los lavabos de piedra y la grifería empotrada mantienen las líneas limpias."],
-   ["int-16","Baño con ducha de azulejo verde","La ducha se reviste de azulejo verde en formato vertical para ganar altura. Perfilería negra, madera en el mueble y un espejo retroiluminado que envuelve el espacio en una luz suave."],
-   ["int-21","Baño con ventana en la ducha","Una ventana dentro de la ducha lleva luz natural y vegetación al baño. Azulejo verde en vertical frente a paredes claras de gran formato, con perfiles negros que dibujan los límites."],
-   ["int-20","Baño con espejos ovalados","Porcelánico de gran formato con aspecto de piedra en suelo y paredes para reducir juntas. Los espejos retroiluminados y la luz bajo el mueble suspendido crean profundidad y calma."],
-   ["int-17","Patio interior ajardinado","Un patio pensado como una estancia más: pavimento drenante con césped, un árbol que da sombra y luz rasante que revela la textura del muro. Ventila e ilumina las piezas que lo rodean."]
+ {t:"Visualización arquitectónica",y:"Estudio",d:"La representación arquitectónica convierte un plano en un lugar reconocible. Las imágenes fotorrealistas permiten al cliente ver los espacios antes de que existan y entender cómo se habitan: la escala de cada estancia, el recorrido de la luz y el diálogo entre materiales. Son una herramienta para decidir con seguridad y para dar a un proyecto la fuerza que necesita para comunicarse.",
+  tags:["Visualización 3D","Renderizado","Exteriores e interiores"],gal:true,
+  groups:[
+   {n:"Proyecto 1",m:"Nombre y datos pendientes",s:[
+    ["int-01","Salón comedor con salida al patio","Un único espacio lineal que remata en el ventanal al patio. La luz de poniente entra filtrada por cortinas de lino y dibuja sombras sobre paredes claras. Roble y gres gris aportan calidez sin cargar el ambiente."],
+    ["int-02","Salón comedor con ventanales al jardín","Carpinterías de suelo a techo convierten el jardín en el fondo del salón. Paramentos claros, nogal en la mesa y tejidos en tonos piedra dejan que la luz rasante sea la protagonista."],
+    ["int-03","Salón abierto al jardín","Volúmenes bajos y horizontales para no competir con la corredera. El mueble suspendido libera el suelo, el yute aporta textura y la luz entra de lado, a la altura de la mirada."],
+    ["int-18","Salón con panel de lamas","El panel de lamas de madera ordena la pared de la televisión y mejora la acústica. Un lucernario aporta luz cenital y la corredera abre el salón al jardín en toda su anchura."],
+    ["int-04","Salón con pared verde y acceso desde el jardín","Una pared en verde oliva ancla la zona de estar y la separa del acceso sin necesidad de tabiques. El negro de carpinterías y puerta ordena el conjunto, y la luz del atardecer suaviza los contrastes."],
+    ["int-05","Comedor junto al patio interior","El patio funciona como pozo de luz y ventilación. Las correderas en esquina disuelven el límite entre dentro y fuera, y la lámpara lineal sobre la mesa señala el lugar de reunión."],
+    ["int-06","Cocina y comedor de noche","De noche el espacio se lee por capas de luz: tira LED bajo los muebles, colgantes sobre la barra y una línea sobre la mesa. Cada zona tiene su propia iluminación y su propio ambiente."],
+    ["int-07","Cocina con isla y encimera oscura","Frentes lisos sin tiradores y encimera de piedra oscura para un volumen sereno. La isla organiza el recorrido entre trabajo y estancia, y la ventana corrida trae la luz justo sobre el fregadero."]
+   ]},
+   {n:"Proyecto 2",m:"Nombre y datos pendientes",s:[
+    ["int-08","Cocina abierta al comedor","La cocina se recoge bajo un falso techo que define su ámbito sin cerrarla. Madera natural, blanco y acero en una paleta mínima, con la luz de la mañana entrando de lado hasta el comedor."],
+    ["int-22","Cocina verde de uso diario","Una cocina lineal pensada para la vida cotidiana. Frentes en verde bosque, columnas de madera y la ventana integrada en el centro de la composición, con luz que llega hasta la mesa del comedor."],
+    ["int-09","Cocina verde con barra","Frentes verdes y azulejo vertical en el mismo tono crean un fondo continuo. La barra de madera hace de transición con el salón y la luz baja de la tarde resalta cada textura."],
+    ["int-10","Cocina con mesa de office","Una cocina compacta resuelta en un solo frente. La madera ordena el almacenaje y una ventana estrecha basta para llenar el rincón de office de luz y sombras vegetales."],
+    ["int-19","Comedor junto a la cocina","Madera clara en mesa, sillas y lámparas para un ambiente cálido y continuo con la cocina. Las lámparas de varillas filtran la luz y la reparten de forma difusa sobre la mesa."],
+    ["int-11","Dormitorio principal","Un espacio de descanso con pocos materiales: pared en gris cálido, textiles naturales y madera clara. La luz natural se tamiza con lino y la artificial se reduce a puntos bajos y cálidos."],
+    ["int-12","Dormitorio con vistas al valle","La ventana enmarca el paisaje como un cuadro y la cama se orienta hacia ella. Cabecero tapizado, tonos arena y la luz rasante de la tarde componen un ambiente sereno."]
+   ]},
+   {n:"Proyecto 3",m:"Nombre y datos pendientes",s:[
+    ["int-13","Dormitorio con pared azul y salida a la terraza","El azul profundo de la pared contrasta con la madera del armario y potencia el dibujo de las sombras. La corredera a la terraza prolonga el dormitorio hacia el exterior."],
+    ["int-14","Dormitorio con cama abatible y estantería","Mobiliario integrado que libera superficie útil: la cama se pliega dentro de un mueble de almacenaje y estantería. El verde de fondo y la madera clara hacen que un espacio pequeño se perciba amplio."],
+    ["int-15","Baño con doble lavabo y revestimiento acanalado","Un baño tratado como una sola pieza en tonos arena. El revestimiento acanalado hace vibrar la luz, y los lavabos de piedra y la grifería empotrada mantienen las líneas limpias."],
+    ["int-16","Baño con ducha de azulejo verde","La ducha se reviste de azulejo verde en formato vertical para ganar altura. Perfilería negra, madera en el mueble y un espejo retroiluminado que envuelve el espacio en una luz suave."],
+    ["int-21","Baño con ventana en la ducha","Una ventana dentro de la ducha lleva luz natural y vegetación al baño. Azulejo verde en vertical frente a paredes claras de gran formato, con perfiles negros que dibujan los límites."],
+    ["int-20","Baño con espejos ovalados","Porcelánico de gran formato con aspecto de piedra en suelo y paredes para reducir juntas. Los espejos retroiluminados y la luz bajo el mueble suspendido crean profundidad y calma."],
+    ["int-17","Patio interior ajardinado","Un patio pensado como una estancia más: pavimento drenante con césped, un árbol que da sombra y luz rasante que revela la textura del muro. Ventila e ilumina las piezas que lo rodean."]
+   ]}
   ]},
  {t:"Vivienda industrializada y accesible",y:"En desarrollo",d:"Un conjunto de viviendas de una planta dentro de un plan de vivienda accesible. La casa se resuelve una vez y se repite: tres módulos fabricados en taller, la misma distribución y los mismos materiales en cada unidad, para construir más vivienda, en menos tiempo y a un precio que se pueda pagar.",
   tags:["Vivienda accesible","Construcción modular","Conjunto residencial"],gal:true,more:"ados",
@@ -730,7 +748,7 @@ $("projects").innerHTML=PROJECTS.map((p,i)=>`
    <div class="d"><p>${esc(p.d)}</p><div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div></div>
    <span class="label y">${esc(p.y)}</span>
   </div>
-  ${p.gal?`<div class="gal fit" id="gal-${i}"></div>`:`<div class="shots">${p.s.map(([id,c,alt])=>shotBtn(id,c,alt,p.t,false)).join("")}</div>`}
+  ${p.groups?`<div class="vtabs" role="tablist" aria-label="Proyectos de visualización" id="vt-${i}">${p.groups.map((g,k)=>`<button type="button" role="tab" data-k="${k}" aria-selected="${k?"false":"true"}" aria-controls="gal-${i}"><span class="vt-n">${pad(k+1)}</span><span class="vt-t">${esc(g.n)}</span>${g.m?`<span class="vt-m">${esc(g.m)}</span>`:""}</button>`).join("")}</div>`:""}${p.gal?`<div class="gal fit" id="gal-${i}"${p.groups?' role="tabpanel"':""}></div>`:`<div class="shots">${p.s.map(([id,c,alt])=>shotBtn(id,c,alt,p.t,false)).join("")}</div>`}
   ${p.more?`<div class="case-intro"><p class="big">${esc(p.lead)}</p><div class="case-more-btn"><button type="button" class="btn more-btn" aria-expanded="false" aria-controls="more-${i}"><span>Leer más</span><span aria-hidden="true">↓</span></button></div></div>
   <div class="more" id="more-${i}" hidden>${MORE[p.more]}</div>`:""}
  </article>`).join("");
@@ -765,7 +783,12 @@ function makeGal(el,list,group){
  main.onclick=()=>{show(ks[cur]);lb.showModal()};
 }
 makeGal($("caseGal"),[["modular-1","Fachada de lamas de madera y marco oscuro"],["modular-2","Lamas de madera con porche en esquina"],["modular-3","Fachada clara con acceso enmarcado"],["modular-4","Fachada oscura con cochera cubierta"]],CASE);
-PROJECTS.forEach((p,i)=>{if(p.gal)makeGal($("gal-"+i),p.s,p.t)});
+PROJECTS.forEach((p,i)=>{if(!p.gal)return;const el=$("gal-"+i);
+ if(!p.groups){makeGal(el,p.s,p.t);return}
+ const open=k=>{const g=p.groups[k];el.classList.remove("has-note");makeGal(el,g.s,`${p.t} / ${g.n}`);
+  $("vt-"+i).querySelectorAll("[role=tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.k==k))};
+ $("vt-"+i).addEventListener("click",e=>{const b=e.target.closest("[role=tab]");if(b&&b.getAttribute("aria-selected")!=="true")open(+b.dataset.k)});
+ open(0)});
 
 const f=ARTS[0];
 $("feat").innerHTML=`<a class="feat" href="#leer-${f.slug}">
