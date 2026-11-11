@@ -83,6 +83,10 @@ p{margin:0}
   .axes span{top:65px}
 }
 figure{margin:0}
+/* margen de seguridad: las imágenes fuera del hero no llenan todo el ancho */
+:root{--img-max:1180px}
+.gal,.shots{max-width:var(--img-max);margin-inline:auto;width:100%}
+.a-cover{max-width:var(--img-max);width:calc(100% - 2*var(--m));margin-inline:auto}
 
 section{padding-block:clamp(56px,8vw,112px)}
 .sec-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:clamp(32px,5vw,64px)}
