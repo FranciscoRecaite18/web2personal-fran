@@ -431,6 +431,18 @@ dialog::backdrop{background:rgba(17,17,17,.86)}
   .next .label,.next h3,.next .go{grid-column:1/13;justify-self:start}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+/* títulos y textos que van uno al lado del otro arrancan a la misma altura */
+.proj-meta,.feat,.next{align-items:start}
+.intro p{align-self:start}
+.case-head{align-items:start;row-gap:14px}
+.case-title{display:contents}
+.case-title .n{grid-column:1/13;grid-row:1}
+.case-title .label{grid-column:1/13;grid-row:2}
+.case-title h2{grid-column:1/8;grid-row:3}
+.case-claim{grid-row:3}
+.proj-meta h3,.case-title h2,.case-claim,.intro h2,.intro p,.about h2,.about .txt p:first-child,.feat h3,.next h3,.solves h3,
+.proj-meta .d p:first-child,.proj-meta .n,.proj-meta .y{text-box:trim-both cap alphabetic}
+@media (max-width:900px){.case-title h2,.case-claim{grid-column:1/13}.case-claim{grid-row:4}}
 </style>
 </head>
 <body>
@@ -616,7 +628,7 @@ const PROJECTS=[
    ["int-20","Baño con espejos ovalados","Porcelánico de gran formato con aspecto de piedra en suelo y paredes para reducir juntas. Los espejos retroiluminados y la luz bajo el mueble suspendido crean profundidad y calma."],
    ["int-17","Patio interior ajardinado","Un patio pensado como una estancia más: pavimento drenante con césped, un árbol que da sombra y luz rasante que revela la textura del muro. Ventila e ilumina las piezas que lo rodean."]
   ]},
- {t:"Viviendas adosadas",y:"En desarrollo",d:"Un conjunto de viviendas de una planta dentro de un plan de vivienda accesible. La casa se resuelve una vez y se repite: tres módulos fabricados en taller, la misma distribución y los mismos materiales en cada unidad, para construir más vivienda, en menos tiempo y a un precio que se pueda pagar.",
+ {t:"Vivienda industrializada y accesible",y:"En desarrollo",d:"Un conjunto de viviendas de una planta dentro de un plan de vivienda accesible. La casa se resuelve una vez y se repite: tres módulos fabricados en taller, la misma distribución y los mismos materiales en cada unidad, para construir más vivienda, en menos tiempo y a un precio que se pueda pagar.",
   tags:["Vivienda accesible","Construcción modular","Conjunto residencial"],gal:true,more:"ados",
   lead:"La vivienda no es cara solo por el suelo. También lo es por la forma en que se produce.",
   s:[["ados-1","Frente a la calle: un patio propio entre muros para cada casa"],["ados-2","Salón comedor con salida al jardín"],["ados-3","Del frente de la cocina al jardín, de fachada a fachada"],["ados-4","Cocina abierta al comedor"],["ados-5","Dormitorio principal"]]},
@@ -726,7 +738,7 @@ document.querySelectorAll(".more-btn").forEach(b=>b.onclick=()=>{const m=$(b.get
 /* planta: cambiar entre vista 3D y plano acotado */
 document.querySelectorAll(".plan").forEach(pl=>{
  const tabs=[...pl.querySelectorAll(".plan-tabs button")],imgs=[...pl.querySelectorAll(".plan-stage img")];
- const ks=imgs.map(im=>shots.push({src:im.getAttribute("src"),cap:"Viviendas adosadas / "+im.dataset.cap})-1);
+ const ks=imgs.map(im=>shots.push({src:im.getAttribute("src"),cap:"Vivienda industrializada y accesible / "+im.dataset.cap})-1);
  let cur=0;
  tabs.forEach((t,j)=>t.onclick=()=>{cur=j;tabs.forEach((x,k)=>x.setAttribute("aria-selected",k===j));imgs.forEach((x,k)=>x.classList.toggle("on",k===j))});
  pl.querySelector(".plan-stage").onclick=()=>{show(ks[cur]);lb.showModal()};
