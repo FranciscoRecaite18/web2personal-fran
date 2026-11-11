@@ -443,18 +443,29 @@ dialog::backdrop{background:rgba(17,17,17,.86)}
 .proj-meta h3,.case-title h2,.case-claim,.intro h2,.intro p,.about h2,.about .txt p:first-child,.feat h3,.next h3,.solves h3,
 .proj-meta .d p:first-child,.proj-meta .n,.proj-meta .y{text-box:trim-both cap alphabetic}
 @media (max-width:900px){.case-title h2,.case-claim{grid-column:1/13}.case-claim{grid-row:4}}
-/* visualización agrupada por proyecto: pestañas encima de la galería */
-.vtabs{display:flex;margin:0 0 18px;border-top:1px solid var(--fg);overflow-x:auto;scrollbar-width:none}
-.vtabs::-webkit-scrollbar{display:none}
-.vtabs button{flex:1 0 auto;min-width:180px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:baseline;text-align:left;padding:14px 18px 14px 0;border-top:3px solid transparent;margin-top:-2px;color:var(--muted);transition:color .2s,border-color .2s}
-.vtabs button+button{padding-left:18px;border-left:1px solid var(--border)}
-.vtabs .vt-n{font-family:var(--mono);font-size:12px}
-.vtabs .vt-t{font-family:var(--display);font-weight:700;font-size:clamp(17px,1.4vw,20px);letter-spacing:-.02em;line-height:1.15}
-.vtabs .vt-m{grid-column:2;font-size:13px;line-height:1.3}
-.vtabs button:hover{color:var(--fg)}
-.vtabs button[aria-selected="true"]{color:var(--fg);border-top-color:var(--accent)}
-.vtabs button[aria-selected="true"] .vt-n{color:var(--accent)}
-@media (max-width:640px){.vtabs button{min-width:150px}.vtabs .vt-m{display:none}}
+/* visualización: una miniatura por proyecto; al tocarla se abre su galería */
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,3vw,40px) var(--g)}
+.vcard{display:grid;gap:12px;width:100%;text-align:left;cursor:pointer}
+.vc-pic{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--surface)}
+.vc-pic img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.vcard:hover .vc-pic img{transform:scale(1.04)}
+.vc-count{position:absolute;left:12px;bottom:12px;color:#fff!important;background:rgba(17,17,17,.55);padding:5px 8px;backdrop-filter:blur(4px)}
+.vc-meta{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline;border-top:1px solid var(--fg);padding-top:12px}
+.vt-n{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.vc-t{font-family:var(--display);font-weight:700;font-size:clamp(19px,1.6vw,24px);letter-spacing:-.02em;line-height:1.15}
+.vc-go{font-family:var(--mono);font-size:14px;transition:color .2s,transform .2s}
+.vcard:hover .vc-go{color:var(--accent);transform:translate(2px,-2px)}
+.vc-m{font-size:14px;color:var(--muted);line-height:1.4;padding-left:calc(1ch*2 + 12px)}
+@media (max-width:900px){.vgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.vgrid{grid-template-columns:1fr}}
+#vis{width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;background:var(--bg);color:var(--fg);overflow:auto}
+#vis::backdrop{background:var(--bg)}
+.vis-in{max-width:calc(var(--content,1120px) + 2*var(--m));margin-inline:auto;padding:clamp(18px,2.4vw,28px) var(--m) 32px}
+.vis-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--fg)}
+.vis-h{display:grid;gap:8px}
+.vis-h h3{font-size:clamp(26px,3vw,40px);font-weight:800;line-height:1;letter-spacing:-.035em}
+.vis-nav{display:flex;gap:8px}
+#vis .gal .gal-main,#vis .gal.fit .gal-main{height:min(62.5cqw,calc(100svh - 11cqw - 190px))}
 </style>
 </head>
 <body>
@@ -748,7 +759,7 @@ $("projects").innerHTML=PROJECTS.map((p,i)=>`
    <div class="d"><p>${esc(p.d)}</p><div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div></div>
    <span class="label y">${esc(p.y)}</span>
   </div>
-  ${p.groups?`<div class="vtabs" role="tablist" aria-label="Proyectos de visualización" id="vt-${i}">${p.groups.map((g,k)=>`<button type="button" role="tab" data-k="${k}" aria-selected="${k?"false":"true"}" aria-controls="gal-${i}"><span class="vt-n">${pad(k+1)}</span><span class="vt-t">${esc(g.n)}</span>${g.m?`<span class="vt-m">${esc(g.m)}</span>`:""}</button>`).join("")}</div>`:""}${p.gal?`<div class="gal fit" id="gal-${i}"${p.groups?' role="tabpanel"':""}></div>`:`<div class="shots">${p.s.map(([id,c,alt])=>shotBtn(id,c,alt,p.t,false)).join("")}</div>`}
+  ${p.groups?`<div class="vgrid" id="vg-${i}">${p.groups.map((g,k)=>`<button type="button" class="vcard" data-k="${k}" aria-haspopup="dialog"><span class="vc-pic"><img src="img/${(g.cover||g.s[0][0])}.jpg" alt="" loading="lazy"><span class="vc-count label">${g.s.length} imágenes</span></span><span class="vc-meta"><span class="vt-n">${pad(k+1)}</span><span class="vc-t">${esc(g.n)}</span><span class="vc-go" aria-hidden="true">↗</span></span>${g.m?`<span class="vc-m">${esc(g.m)}</span>`:""}</button>`).join("")}</div>`:""}${p.groups?"":p.gal?`<div class="gal fit" id="gal-${i}"></div>`:`<div class="shots">${p.s.map(([id,c,alt])=>shotBtn(id,c,alt,p.t,false)).join("")}</div>`}
   ${p.more?`<div class="case-intro"><p class="big">${esc(p.lead)}</p><div class="case-more-btn"><button type="button" class="btn more-btn" aria-expanded="false" aria-controls="more-${i}"><span>Leer más</span><span aria-hidden="true">↓</span></button></div></div>
   <div class="more" id="more-${i}" hidden>${MORE[p.more]}</div>`:""}
  </article>`).join("");
@@ -783,12 +794,9 @@ function makeGal(el,list,group){
  main.onclick=()=>{show(ks[cur]);lb.showModal()};
 }
 makeGal($("caseGal"),[["modular-1","Fachada de lamas de madera y marco oscuro"],["modular-2","Lamas de madera con porche en esquina"],["modular-3","Fachada clara con acceso enmarcado"],["modular-4","Fachada oscura con cochera cubierta"]],CASE);
-PROJECTS.forEach((p,i)=>{if(!p.gal)return;const el=$("gal-"+i);
- if(!p.groups){makeGal(el,p.s,p.t);return}
- const open=k=>{const g=p.groups[k];el.classList.remove("has-note");makeGal(el,g.s,`${p.t} / ${g.n}`);
-  $("vt-"+i).querySelectorAll("[role=tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.k==k))};
- $("vt-"+i).addEventListener("click",e=>{const b=e.target.closest("[role=tab]");if(b&&b.getAttribute("aria-selected")!=="true")open(+b.dataset.k)});
- open(0)});
+PROJECTS.forEach((p,i)=>{if(!p.gal)return;
+ if(!p.groups){makeGal($("gal-"+i),p.s,p.t);return}
+ $("vg-"+i).addEventListener("click",e=>{const b=e.target.closest(".vcard");if(b)openVis(p,+b.dataset.k)})});
 
 const f=ARTS[0];
 $("feat").innerHTML=`<a class="feat" href="#leer-${f.slug}">
@@ -1026,6 +1034,28 @@ function route(){const h=location.hash.slice(1);const i=h.startsWith("leer-")?AR
  if(art){renderArticle(i);scrollTo(0,0);onScroll()}
  else{document.title="Francisco Recaite";const el=h&&document.getElementById(h);if(el)requestAnimationFrame(()=>el.scrollIntoView());}}
 addEventListener("hashchange",()=>{route();navState()});route();navState();
+</script>
+<dialog id="vis" aria-labelledby="visTitle">
+  <div class="vis-in">
+    <div class="vis-top">
+      <div class="vis-h"><span class="label" id="visMeta"></span><h3 id="visTitle"></h3></div>
+      <div class="vis-nav"><button type="button" class="x" id="visPrev" aria-label="Proyecto anterior">←</button><button type="button" class="x" id="visNext" aria-label="Proyecto siguiente">→</button><button type="button" class="x" id="visClose" autofocus>Cerrar</button></div>
+    </div>
+    <div class="gal fit" id="visGal"></div>
+  </div>
+</dialog>
+<script>
+(()=>{const d=document.getElementById("vis"),G=document.getElementById("visGal");let P=null,K=0;
+ const fill=()=>{const g=P.groups[K];G.className="gal fit";makeGal(G,g.s,`${P.t} / ${g.n}`);
+  document.getElementById("visTitle").textContent=g.n;
+  document.getElementById("visMeta").textContent=[String(K+1).padStart(2,"0")+" / "+String(P.groups.length).padStart(2,"0"),g.m].filter(Boolean).join("  ·  ")};
+ window.openVis=(p,k)=>{P=p;K=k;fill();d.showModal();d.scrollTop=0};
+ document.getElementById("visClose").onclick=()=>d.close();
+ document.getElementById("visPrev").onclick=()=>{K=(K-1+P.groups.length)%P.groups.length;fill()};
+ document.getElementById("visNext").onclick=()=>{K=(K+1)%P.groups.length;fill()};
+ d.addEventListener("click",e=>{if(e.target===d)d.close()});
+ d.addEventListener("close",()=>{G.innerHTML=""});
+})();
 </script>
 </body>
 </html>
