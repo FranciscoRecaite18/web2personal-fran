@@ -466,6 +466,8 @@ dialog::backdrop{background:rgba(17,17,17,.86)}
 .vis-h h3{font-size:clamp(26px,3vw,40px);font-weight:800;line-height:1;letter-spacing:-.035em}
 .vis-nav{display:flex;gap:8px}
 #vis .gal .gal-main,#vis .gal.fit .gal-main{height:min(62.5cqw,calc(100svh - 11cqw - 190px))}
+#visDesc{max-width:68ch;font-size:15px;line-height:1.5;color:var(--muted)}
+#vis:has(#visDesc:not([hidden])) .gal .gal-main,#vis:has(#visDesc:not([hidden])) .gal.fit .gal-main{height:min(62.5cqw,calc(100svh - 11cqw - 270px))}
 </style>
 </head>
 <body>
@@ -695,6 +697,15 @@ const PROJECTS=[
     ["vma-04","Dormitorio principal","Orientado al patio, con un giro libre de 1,50 m junto a la cama."],
     ["vma-05","Segundo dormitorio",""],
     ["vma-06","Patio trasero","La casa se pega a la calle para liberar todo el fondo de la parcela como patio privado."]
+   ]},
+   {n:"Cerro de Marica",m:"Complejo turístico rural · Antequera",d:"Una finca agrícola entre los Dólmenes y El Torcal se reconvierte en un complejo turístico que la mantiene en producción. Pone en valor la almazara romana que conserva, forma y emplea a gente de la comarca y da a Antequera un motivo para que el visitante se quede.",s:[
+    ["cdm-01","El edificio principal","Se extiende siguiendo la curva de nivel, con la cubierta vegetal al mismo plano que el olivar. Desde arriba, desaparece."],
+    ["cdm-02","Acceso y centro de interpretación","La villa romana de El Gallumbar, abierta al público, se convierte en el centro del proyecto y en un nuevo equipamiento para el municipio."],
+    ["cdm-03","La aldea","El alojamiento se agrupa como una aldea a escala de cortijo. Más del 99 % de la finca sigue libre, dedicada al olivar y al paisaje."],
+    ["cdm-04","Unidad de alojamiento","Hormigón de árido calizo, piedra seca y madera: los materiales del lugar. Las celosías regulan la luz sin cerrar la vista."],
+    ["cdm-05","Interior",""],
+    ["cdm-06","Baño",""],
+    ["cdm-07","Restaurante","Cocina ligada al aceite de la finca y al centro de formación: el producto local, de la almazara a la mesa."]
    ]}
   ]},
  {t:"Vivienda industrializada y accesible",y:"En desarrollo",d:"Un conjunto de viviendas de una planta dentro de un plan de vivienda accesible. La casa se resuelve una vez y se repite: tres módulos fabricados en taller, la misma distribución y los mismos materiales en cada unidad, para construir más vivienda, en menos tiempo y a un precio que se pueda pagar.",
@@ -1078,7 +1089,7 @@ addEventListener("hashchange",()=>{route();navState()});route();navState();
 <dialog id="vis" aria-labelledby="visTitle">
   <div class="vis-in">
     <div class="vis-top">
-      <div class="vis-h"><span class="label" id="visMeta"></span><h3 id="visTitle"></h3></div>
+      <div class="vis-h"><span class="label" id="visMeta"></span><h3 id="visTitle"></h3><p id="visDesc" hidden></p></div>
       <div class="vis-nav"><button type="button" class="x" id="visPrev" aria-label="Proyecto anterior">←</button><button type="button" class="x" id="visNext" aria-label="Proyecto siguiente">→</button><button type="button" class="x" id="visClose" autofocus>Cerrar</button></div>
     </div>
     <div class="gal fit" id="visGal"></div>
@@ -1087,7 +1098,7 @@ addEventListener("hashchange",()=>{route();navState()});route();navState();
 <script>
 (()=>{const d=document.getElementById("vis"),G=document.getElementById("visGal");let P=null,K=0;
  const fill=()=>{const g=P.groups[K];G.className="gal fit";makeGal(G,g.s,`${P.t} / ${g.n}`);
-  document.getElementById("visTitle").textContent=g.n;
+  document.getElementById("visTitle").textContent=g.n;const dd=document.getElementById("visDesc");dd.textContent=g.d||"";dd.hidden=!g.d;
   document.getElementById("visMeta").textContent=[String(K+1).padStart(2,"0")+" / "+String(P.groups.length).padStart(2,"0"),g.m].filter(Boolean).join("  ·  ")};
  window.openVis=(p,k)=>{P=p;K=k;fill();d.showModal();d.scrollTop=0};
  document.getElementById("visClose").onclick=()=>d.close();
