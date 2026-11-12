@@ -706,7 +706,7 @@ const PROJECTS=[
  {t:"Edificio residencial con bajo comercial",y:"Estudio",wide:true,d:"El proyecto plantea un bloque residencial de media altura cuya envolvente se resuelve con bandas horizontales de GRC que recorren el perímetro y se curvan en las esquinas, disolviendo la rigidez del volumen. Cada banda actúa a la vez como antepecho, protección solar y jardinera: los forjados vuelan para generar terrazas profundas que funcionan como una estancia más, y la vegetación pasa a formar parte de la fachada. La ligereza y la capacidad de moldeado del GRC permiten espesores mínimos y curvaturas continuas difíciles de alcanzar con sistemas tradicionales, con un material que resiste la radiación y el ambiente salino del litoral. En planta baja, un frente comercial acristalado activa la esquina y devuelve la vida a la calle. El conjunto propone una nueva lectura de la vivienda en la Costa del Sol: horizontal, abierta al paisaje y pensada para habitar el exterior.",
   tags:["Fachada de GRC","Uso mixto","Costa del Sol"],
   s:[["839-25","full","Vista desde la calle"]]},
- {t:"Cerro de Marica, Antequera",y:"Propuesta",wide:true,gal:true,d:"Una finca agrícola de 136 hectáreas entre los Dólmenes y El Torcal se reconvierte en un complejo turístico rural sin dejar de producir. El proyecto parte de lo que ya existe: el olivar en bancales, los caminos históricos que la atraviesan y una almazara romana del siglo I conservada dentro de la finca. En lugar de dispersarse, el alojamiento se agrupa como una aldea a escala de cortijo y más del 99 % del suelo queda libre. La villa romana se abre al público como centro de interpretación, y un centro de formación en hostelería, oficios y cultura del aceite genera empleo para la comarca. Es una forma de crecer que suma valor al territorio en lugar de consumirlo: da a Antequera un nuevo equipamiento cultural, retiene talento local y convierte el paso del visitante en estancia.",
+ {t:"Cerro de Marica, Antequera",y:"Propuesta",wide:true,gal:true,more:"cerro",lead:"Crecer sin consumir el territorio: que una finca agrícola valga más produciendo, abierta y habitada.",d:"Una finca agrícola de 136 hectáreas entre los Dólmenes y El Torcal se reconvierte en un complejo turístico rural sin dejar de producir. El proyecto pone en valor la almazara romana que conserva la finca, agrupa el alojamiento como una aldea a escala de cortijo y deja libre más del 99 % del suelo. Su objetivo es que Antequera gane un equipamiento cultural, empleo para la comarca y un motivo para que el visitante se quede.",
   tags:["Reconversión rural","Turismo y patrimonio","Antequera"],
   s:[
    ["cdm-01","El edificio principal","Se extiende siguiendo la curva de nivel, con la cubierta vegetal al mismo plano que el olivar. Desde arriba, desaparece."],
@@ -718,7 +718,42 @@ const PROJECTS=[
    ["cdm-07","Restaurante","Cocina ligada al aceite de la finca y al centro de formación: el producto local, de la almazara a la mesa."]
   ]}
 ];
-const MORE={ados:`
+const MORE={cerro:`
+ <div class="case-sub" style="padding-top:clamp(40px,6vw,80px)"><span class="label">El lugar</span><div class="stack">
+  <p>Una finca que ya lo tiene casi todo: paisaje, historia y un flujo de visitantes que hoy pasa de largo.</p>
+  <p>El Cortijo de Gayumbar ocupa el corredor natural que une los dos grandes bienes de Antequera: el Sitio de los Dólmenes, Patrimonio Mundial, y el Paraje Natural de El Torcal. Es un paisaje trabajado, de olivar en bancales, cereal y pasto, con el río de la Villa en su linde. Junto a la finca pasan el Camino Mozárabe de Santiago y la Gran Senda de Málaga. Y dentro conserva una villa romana dedicada a hacer aceite, con su prensa y sus depósitos, en uso hace dos mil años.</p>
+ </div></div>
+ <div class="stats">
+  <div><b>136 ha</b><span>de finca agrícola entre los Dólmenes y El Torcal</span><span class="label">Superficie</span></div>
+  <div><b>+99 %</b><span>del suelo queda sin edificar, dedicado al olivar, al cultivo y al paisaje</span><span class="label">Huella</span></div>
+  <div><b>S. I</b><span>la almazara romana de El Gallumbar, dentro de la propia finca</span><span class="label">Patrimonio</span></div>
+ </div>
+ <p class="stats-note">Datos del documento de proyecto. Los Dólmenes quedan a 4,7 km al norte y El Torcal a 3,9 km al sur.</p>
+ <div class="case-sub" style="padding-top:0"><span class="label">La idea</span><div class="stack">
+  <p>Reconvertir no es sustituir. Es sumar un uso nuevo a lo que ya funciona.</p>
+  <p>La finca no deja de ser agrícola: el olivar y los cultivos siguen produciendo y abastecen la cocina del complejo. Sobre esa base se añade un uso turístico de baja densidad, que ocupa una fracción mínima del suelo y se organiza alrededor del patrimonio que ya está allí. El hallazgo de la almazara romana cambió el enfoque del proyecto: un complejo turístico más compite con muchos otros, pero uno construido en torno a la primera almazara de una tierra que lleva dos mil años haciendo aceite tiene una historia que nadie más puede contar.</p>
+ </div></div>
+ <div class="pillars">
+  <div class="col"><span class="n">A</span><h3>Una aldea, no una urbanización</h3><p>El alojamiento se agrupa en volúmenes bajos a escala de cortijo, con calles y plazas que siguen el terreno. El resto de la finca queda intacto.</p></div>
+  <div class="col"><span class="n">B</span><h3>Patrimonio abierto</h3><p>La villa romana se convierte en un centro de interpretación público: un equipamiento cultural nuevo para Antequera.</p></div>
+  <div class="col"><span class="n">C</span><h3>Formación y empleo</h3><p>Un centro de formación en hostelería, oficios tradicionales y cultura del aceite, con plazas y contratación de la comarca.</p></div>
+  <div class="col"><span class="n">D</span><h3>Paisaje y cielo</h3><p>Los senderos enlazan con los caminos que ya existen e iluminación cálida y discreta protege el cielo oscuro del Torcal.</p></div>
+ </div>
+ <div class="solves">
+  <div class="solves-h"><span class="label">Lo que gana Antequera</span><h3>Un proyecto que hace crecer al pueblo, no solo a la finca.</h3></div>
+  <ul>
+   <li><span class="pb">El visitante pasa de largo</span><span class="rs">Alojamiento, cocina y experiencias que convierten la visita en estancia.</span></li>
+   <li><span class="pb">El patrimonio se pierde sin uso</span><span class="rs">La almazara romana se recupera y se abre al público.</span></li>
+   <li><span class="pb">Los jóvenes se van a formarse fuera</span><span class="rs">Un centro de formación y empleo ligado a la comarca.</span></li>
+   <li><span class="pb">El campo pierde actividad</span><span class="rs">El olivar sigue en producción y encuentra un nuevo mercado en la propia finca.</span></li>
+   <li><span class="pb">Crecer a costa del paisaje</span><span class="rs">Más del 99 % del suelo queda libre de edificación.</span></li>
+  </ul>
+ </div>
+ <div class="two">
+  <div><span class="label">La arquitectura</span><p>La arquitectura toma su lenguaje de la geología del Torcal y de la tradición constructiva de la comarca. La pieza principal se extiende siguiendo la curva de nivel, con la cubierta vegetal al mismo plano que el olivar. Las unidades se abren al paisaje con celosías de madera y usan los materiales del lugar: hormigón de árido calizo, piedra seca y madera.</p></div>
+  <div><span class="label">El camino</span><p>La ley andaluza de 2021 permite autorizar usos turísticos en suelo rústico sin cambiar su clasificación. El expediente se tramita en el propio Ayuntamiento, que ya resolvió a favor un caso similar en el mismo polígono. El proyecto debe acreditar su interés público, y el centro de formación y la puesta en valor de la villa romana son precisamente eso.</p></div>
+ </div>
+`,ados:`
  <div class="case-sub" style="padding-top:clamp(40px,6vw,80px)"><span class="label">El problema</span><div class="stack">
   <p>Acceder a una vivienda se ha convertido en uno de los grandes problemas del país, y ya no afecta solo a quien tiene ingresos bajos.</p>
   <p>Los precios suben mucho más rápido que los salarios, cada año se forman más hogares de los que se construyen y una generación entera retrasa su emancipación hasta pasados los treinta. Las ayudas a la demanda no bastan si no hay casas. Hace falta producir más vivienda, más rápido y a un coste que permita venderla a precios asumibles.</p>
