@@ -468,6 +468,8 @@ dialog::backdrop{background:rgba(17,17,17,.86)}
 #vis .gal .gal-main,#vis .gal.fit .gal-main{height:min(62.5cqw,calc(100svh - 11cqw - 190px))}
 #visDesc{max-width:68ch;font-size:15px;line-height:1.5;color:var(--muted)}
 #vis:has(#visDesc:not([hidden])) .gal .gal-main,#vis:has(#visDesc:not([hidden])) .gal.fit .gal-main{height:min(62.5cqw,calc(100svh - 11cqw - 270px))}
+.clink{text-decoration:underline;text-decoration-color:#555;text-underline-offset:4px;transition:color .2s,text-decoration-color .2s;overflow-wrap:anywhere}
+.clink:hover{color:var(--accent);text-decoration-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -602,8 +604,8 @@ dialog::backdrop{background:rgba(17,17,17,.86)}
     <span class="label">Francisco Recaite / Málaga</span>
     <h2>Arquitectura para entender y transformar el territorio.</h2>
     <div class="contact">
-      <div><span class="label">Email</span><span class="todo">Pendiente: añadir email de contacto</span></div>
-      <div><span class="label">Instagram</span><span class="todo">Pendiente: añadir usuario</span></div>
+      <div><span class="label">Email</span><a class="clink" href="mailto:franciscorecaite@gmail.com">franciscorecaite@gmail.com</a></div>
+      <div><span class="label">Instagram</span><a class="clink" href="https://www.instagram.com/franciscorecaite.ga/" target="_blank" rel="noopener">@franciscorecaite.ga ↗</a></div>
       <div><span class="label">Ubicación</span><span>Málaga, Andalucía, España</span></div>
     </div>
     <div class="fine">
